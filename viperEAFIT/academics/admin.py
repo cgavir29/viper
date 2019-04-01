@@ -6,7 +6,7 @@ from academics.models import Program, SubProgram, Course
 class ProgramAdmin(admin.ModelAdmin):
     list_display = ('name', )
     list_display_links = ('name', )
-    list_per_page = 25 
+    list_per_page = 25
     search_fields = ('name', )
 
 
@@ -22,7 +22,7 @@ class SubProgramAdmin(admin.ModelAdmin):
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('name', 'subprogram', 'is_active', )
     list_display_links = ('name', )
-    list_per_page = 25 
-    search_fields = ('name', 'program', )
+    list_per_page = 25
+    search_fields = ('name', 'subprogram__name')
 
 
