@@ -46,25 +46,3 @@ class Schedule(models.Model):
 
     def __str__(self):
         return self.name
-
-    # def __str__(self):
-    #     name = ''
-    #     if self.monday is not None:
-    #         name = self.monday
-
-    #     if self.tuesday is not None:
-    #         name += self.tuesday
-
-    #     if self.wednesday is not None:
-    #         name += self.wednesday
-
-    #     if self.thursday is not None:
-    #         name += self.thursday
-
-    #     if self.friday is not None:
-    #         name += self.friday
-
-    #     if self.saturday is not None:
-    #         name += self.saturday
-
-    #     return name

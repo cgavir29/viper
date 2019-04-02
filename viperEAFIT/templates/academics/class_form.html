@@ -7,9 +7,9 @@
     <div class="container">
         <div class="notification">
             <form method="POST" id="classForm" novalidate
-                data-courses-url="{% url 'classes:ajax_load_courses' %}"
-                data-teachers-url="{% url 'classes:ajax_load_teachers' %}"
-                data-schedules-url="{% url 'classes:ajax_load_schedules' %}">
+                data-courses-url="{% url 'academics:ajax_load_courses' %}"
+                data-teachers-url="{% url 'academics:ajax_load_teachers' %}"
+                data-schedules-url="{% url 'academics:ajax_load_schedules' %}">
                 {% csrf_token %}
                 {{ form | bulma }}
                 <div class="field">

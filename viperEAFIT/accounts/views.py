@@ -6,7 +6,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import Teacher
 from schedules.forms import SetScheduleForm
 from venues.forms import SetVenuesForm
-from classes.forms import CreateClassForm
 
 # Create your views here.
 class LoginView(FormView):

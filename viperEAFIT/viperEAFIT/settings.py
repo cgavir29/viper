@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'venues.apps.VenuesConfig',
     'schedules.apps.SchedulesConfig',
     'academics.apps.AcademicsConfig',
-    'classes.apps.ClassesConfig',
 
 ]
 
@@ -139,6 +138,5 @@ STATICFILES_DIRS = [
 
 # Custom Django Auth Settings
 AUTH_USER_MODEL = 'accounts.User'
-
 LOGIN_REDIRECT_URL = 'accounts:login'
 LOGOUT_REDIRECT_URL = 'accounts:login'

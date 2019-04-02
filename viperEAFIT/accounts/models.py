@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from schedules.models import Schedule
 from venues.models import Venue
-from academics.models import Program, SubProgram, Course
+# from academics.models import Program, SubProgram, Course
 
 # from programs.models import Program
 
@@ -25,7 +25,7 @@ class User(AbstractUser):
 
 class Coordinator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    program = models.ForeignKey(Program, on_delete=models.DO_NOTHING, blank=True, null=True)
+    # program = models.ForeignKey(Program, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
@@ -45,8 +45,8 @@ class Teacher(models.Model):
     identification = models.BigIntegerField(unique=True)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=NOVICIO, blank=True)
     availability = models.OneToOneField(Schedule, on_delete=models.CASCADE, blank=True, null=True)
-    subprograms = models.ManyToManyField(SubProgram, verbose_name='Sub-Programas', related_name='subprograms')
-    courses = models.ManyToManyField(Course, related_name='courses')
+    # subprograms = models.ManyToManyField(SubProgram, verbose_name='Sub-Programas', related_name='subprograms')
+    # courses = models.ManyToManyField(Course, related_name='courses')
     venues = models.ManyToManyField(Venue, related_name='venues', blank=True)
 
     # Red Flags

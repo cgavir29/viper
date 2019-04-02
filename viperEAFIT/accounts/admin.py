@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django import forms
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from accounts.models import User, Coordinator, Teacher
@@ -24,7 +23,7 @@ class UserAdmin(DjangoUserAdmin):
 
 @admin.register(Coordinator)
 class CoordinatorAdmin(admin.ModelAdmin):
-    list_display = ('user', 'program')
+    list_display = ('user', )
 
 
 @admin.register(Teacher)
@@ -32,16 +31,13 @@ class TeacherAdmin(admin.ModelAdmin):
     list_display = ('user', 'identification')
     list_display_links = ('user', )
     fieldsets = (
-        (('General Information'), {'fields': (
-            'user', 'identification', 'status',
-            'subprograms', 'courses',
-        )}),
-        (('Red Flags'), {'fields': ('sufficiency', 'simevi', )}),
+        (('General Information'), {'fields': ('user', 'identification', 'status',)}),
+        (('Red Flags'), {'fields': ('sufficiency', 'simevi',)}),
         (('Gold Stars'), {'fields': (
             'coor_eval', 'student_eval', 'auto_eval', 'observations', 'pcp',
         )})
     )
-    filter_horizontal = ('courses', 'subprograms')
+    # filter_horizontal = ('courses', 'subprograms')
 
 admin.site.index_title = None
 admin.site.unregister(Group)
