@@ -53,4 +53,4 @@ class Clase:
         for dia in dias:
             self.horario.set_horario(dia, horas, self.iden)
 
-
+            

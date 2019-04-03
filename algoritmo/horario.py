@@ -55,6 +55,7 @@ class Horario:
     def set_horario(self, dia, horas, val, state=1):
         if state:
             for h in horas:
+                # print(h)
                 self.diario[dia][h] = val
                 if val != 0: 
                     self.total_h += 1

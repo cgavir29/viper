@@ -59,9 +59,7 @@ ALSO START CONSIDERING THE AMOUNT OF PROFESSORS IN A SOLUTION
 `performance`
 >change horarios to be arrays
 >presize hashes 
->faster python hashes, hashbrown for rust (done)
->do not add all professors to a solution, add them as you assign em (done)
->DELETE CURSOS FROM PROFESOR MAYBE
+
 
 `result`
 - make it so gene repair is not random (done but can be improved)
@@ -74,15 +72,19 @@ ALSO START CONSIDERING THE AMOUNT OF PROFESSORS IN A SOLUTION
 - increasing mutation probability !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 - gene repair and maybe solution creation using LNS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-`measurements`
-'measure each op 
-'measure operations in cross over
+
+so:
+since they only care about the professors score then theres no need to even implement something that is not greedy. EXCEPT that there is. y'see the best solution is one where the best possible teachers are assigned, since that will always add up to the higher score.
+When you assign a teacher to a class, regardless of the amount of classes he can teach only decreases by one..... EXCEPT NOT HA. it decreases by the amount of classes he can't teach that day because they're in a different venue. 
+
+so: 
+>You'll want to include this venue thing in the evaluation function.
+>You'll also want to prevent teachers from having one class. 
 
 
-`order of business`
--FIX GENE REPAIR SOMEHOW, finish reading italian paper
--try to improve performance, worst case scenario re write everything in rust. remember to use different hashing function 
--try to improve results by using convergence and other previously mentioned tactics. 
+The reason lns currently doesnt work is because we're not considering things like sedes or giving every teacher a fair amount of classes
+[p1][p1][p1][p1][p2][p2][p3][p2][p3][p5][p6][p7]
+score = p1 x 4 +p2 x 3+ p3*2 +p5 +p6 + p7
 
 
 

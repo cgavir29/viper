@@ -48,6 +48,7 @@ class Solucion:
 
     def del_clprof(self, clase):
         tup = self.get_clprof(clase.iden)
+
         if tup != None:
             self.score -= tup[1]
             # print("THERE'S A GUY IN HERE!")
@@ -56,7 +57,7 @@ class Solucion:
             self.profs.get(tup[0])[0].del_clase(clase)
             self.profs.get(tup[0])[1] -= 1
             self.clase_prof[clase.iden] = None
-                        
+            
             if self.profs.get(tup[0])[1] <= 0:
                 self.active_profs-=1            
     

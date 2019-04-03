@@ -96,11 +96,11 @@ class Profesor:
         #     self.cursos[clase.curso.iden] += 1
 
         for dia in list(clase.horario.diario.keys()):
-            self.horario.set_horario(dia, clase.horario.diario.get(dia), clase.iden)
+            self.horario.set_horario(dia, clase.horario.get_dia(dia), clase.iden)
 
     def del_clase(self, clase):
         # sub one from course
         
         # self.cursos[clase.curso.iden] -=1
         for dia in list(clase.horario.diario.keys()):
-            self.horario.set_horario(dia, clase.horario.diario.get(dia), clase.iden, state=0)
+            self.horario.set_horario(dia, clase.horario.get_dia(dia), clase.iden, state=0)
