@@ -223,7 +223,7 @@ def gen_clases(cursos):
     # print(clase_ind)
 
 
-def gen_clases_full():
+def gen_clases_full(cursos):
     clases = {}
     # not very elegant but good for readability
     for cursoid in cursos:

@@ -2,13 +2,17 @@ import solucion as sol, clase as cl, horario as hr, profesor as pr, simdata as s
 from helper import copy_prof
 
 
-some_cursos = sm.gen_courses()
-some_clases = sm.gen_clases(some_cursos)
-some_profs = sm.gen_rand_profs(250, some_clases, 0.7, 1, True)
-some_clases_index = list(some_clases.keys())
-some_clases_index.sort(key=lambda a: len(some_clases[a].candidates))
-print("we're talking", len(some_profs), "profs")
-print("and", len(some_clases), "clases")
+# some_cursos = sm.gen_courses()
+# some_clases = sm.gen_clases(some_cursos)
+# some_profs = sm.gen_rand_profs(250, some_clases, 0.7, 1, True)
+# some_clases_index = list(some_clases.keys())
+# # some_clases_index.sort(key=lambda a: len(some_clases[a].candidates))
+# print("we're talking", len(some_profs), "profs")
+# print("and", len(some_clases), "clases")
+
+
+def sort_keys(clases_index):
+    pass
 
 
 # This function helps us count holerinos in a solution
@@ -155,12 +159,12 @@ def destroy_rand_cl(sol, rnd_des, clases):
 def repair_simple_greedy(sol, clases, profs, holes):
     index = 0
     seen = []
-    
-    #THIS WHILE LOOP IS EXPERIMENTAL
-    #i think that destroy by classnum
-    #returns a list that still holds a certain order
-    #i want to see what happens if i get rid of that order
-    
+
+    # THIS WHILE LOOP IS EXPERIMENTAL
+    # i think that destroy by classnum
+    # returns a list that still holds a certain order
+    # i want to see what happens if i get rid of that order
+
     while len(seen) < len(holes):
         hole = rnd.choice(holes)
         while hole in seen:
@@ -172,13 +176,13 @@ def repair_simple_greedy(sol, clases, profs, holes):
         index += 1
         clase = clases.get(hole)
         prof = gene_repair_cands(profs, clase, sol)
-        
-        #if the prof has not been added yet
+
+        # if the prof has not been added yet
         if sol.get_prof(prof.iden) == None:
             sol.add_prof(copy_prof(profs.get(prof.iden)))
         sol.set_clprof(clase, prof.iden)
 
-            
+
 """    
     for i in holes:
         asig = sol.get_clprof(i)
@@ -198,45 +202,60 @@ def repair_simple_greedy(sol, clases, profs, holes):
 """
 
 
-
 def balance_class_assigs(sol, clases, profs, holes):
     # run destroy_rand_cl before this
     pass
 
 
-def do_lns(sol, profs, clases_index, clases, silly_teachers = -1, shook_classes = -1):
+def do_lns(sol, profs, clases_index, clases, silly_teachers=-1, shook_classes=-1):
+
+    sort_keys(clases_index)
     if silly_teachers < 0:
-        silly_teachers = int(input("how many underassigned teachers should be removed? "))
+        silly_teachers = int(
+            input("how many underassigned teachers should be removed? ")
+        )
     silly_ones = destroy_by_classnum(sol, silly_teachers, clases)
-    print("after first destruction:", greed.score, "with", greed.active_profs, "profs")
-    count_holes(greed)
+    # silly_ones = []
+    # print("after first destruction:", sol.score, "with", sol.active_profs, "profs")
+    # count_holes(sol)
 
     if shook_classes < 0:
         shook_classes = int(input("how many classes shall be  s h o o k? "))
-        
+
     shook_ones = destroy_rand_cl(sol, shook_classes, clases)
-    print("after rand destruction:", greed.score, "with", greed.active_profs, "profs")
-    count_holes(greed)
-    
+    # print("after rand destruction:", sol.score, "with", sol.active_profs, "profs")
+    # count_holes(sol)
 
     # save the destroyed  classes randomly
 
     repair_simple_greedy(sol, clases, profs, shook_ones + silly_ones)
-    # repair_simple_greedy(greed, some_clases, some_profs, silly_ones + shook_ones)
-    print("after simple repair:", greed.score, "with", greed.active_profs, "profs")
-    count_holes(greed)
+    # repair_simple_soly(sol, some_clases, some_profs, silly_ones + shook_ones)
+    # print("after simple repair:", sol.score, "with", sol.active_profs, "profs")
+    # count_holes(sol)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
-
-    
-
-    
-greed = greedy_sol(some_profs, some_clases_index, some_clases)
-# greed = gen_rndsol(some_profs, some_clases_index, some_clases)
-print("greed scored", greed.score, "with", greed.active_profs, "profs")
-count_holes(greed)
-do_lns(greed, some_profs, some_clases_index, some_clases)
-
+# greed = greedy_sol(some_profs, some_clases_index, some_clases)
+# # greed = gen_rndsol(some_profs, some_clases_index, some_clases)
+# print("greed scored", greed.score, "with", greed.active_profs, "profs")
+# count_holes(greed)
+# do_lns(greed, some_profs, some_clases_index, some_clases, 30, 30)
 
 
 # #t h i s     d o e s n t     c o n s i d e r    c e r t s
