@@ -37,10 +37,11 @@ def load_courses(request):
 
 def load_teachers(request):
     course = request.GET.get('course')
-    venue = request.GET.get('venue')
-    print(venue)
-    teachers = Teacher.objects.filter(courses=course)
-    # print(teachers[0].user.username)
+    # venue = request.GET.get('venue')
+    # print(venue)
+    # Get is used to get 1 object instead of the queryset with the object inside
+    # after that just access the teachers attribute and fetch all teachers
+    teachers = Course.objects.get(id=course).teachers.all()
     context = {
         'teachers': teachers
     }
