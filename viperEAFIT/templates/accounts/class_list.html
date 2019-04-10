@@ -13,20 +13,21 @@
                 <th>Curso</th>
                 <th>Intensidad</th>
                 <th>Sede</th>
-                <th>Horario</th>
-                
+                <th>Horario</th>                            
             </tr>
         </thead>
-        <tbody>
+        <tbody>                
             {% for class in class_list %}
-            <tr>
-                {{ loop.index }}
-                <th>{{ loop.index }}</th>
-                <td>{{ class.course }}</td>
-                <td>{{ class.intensity }}</td>
-                <td>{{ class.venue }}</td>
-                <td>{{ class.schedule }}</td>
-            </tr>
+                {% if class.teacher.user.id == user.id %}
+                <tr>
+                    {{ loop.index }}
+                    <th>{{ loop.index }}</th>
+                    <td>{{ class.course }}</td>
+                    <td>{{ class.intensity }}</td>
+                    <td>{{ class.venue }}</td>
+                    <td>{{ class.schedule }}</td>
+                </tr>
+                {% endif %}
             {% endfor %}
     </table>
 </div>
