@@ -6,6 +6,7 @@ from .views import (
         CoordinatorDashboardView,
         TeacherDashboardView,
         TeacherListView,
+        ClassListView,
 )
 
 app_name = 'accounts'
@@ -15,4 +16,5 @@ urlpatterns = [
         path('coordinator/', CoordinatorDashboardView.as_view(), name='coordinator'),
         path('teacher/', TeacherDashboardView.as_view(), name='teacher'),
         path('coordinator/teacher_list/', TeacherListView.as_view(), name='teacher_list'),
+        path('teacher/class_list/', ClassListView.as_view(), name='class_list'),
 ]

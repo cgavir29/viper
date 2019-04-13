@@ -35,6 +35,7 @@ class CreateClassForm(forms.ModelForm):
         self.fields['subprogram'].queryset = subprogram_qs
         self.fields['course'].queryset = Course.objects.none()
         self.fields['teacher'].queryset = Teacher.objects.none()
+        self.fields['schedule'].queryset = Teacher.objects.none()
 
         if 'course' in self.data:
             try:
@@ -48,11 +49,17 @@ class CreateClassForm(forms.ModelForm):
         if 'teacher' in self.data:
             try:
                 teacher_id = int(self.data.get('teacher'))
-                self.fields['teacher'].queryset = Teacher.objects.filter(id=teacher_id).order_by('name')
+                self.fields['teacher'].queryset = Teacher.objects.filter(id=teacher_id)
             except (ValueError, TypeError):
                 pass
-        elif self.instance.pk:
-            self.fields['teacher'].queryset = self.instance.teacher.teacher_set.order_by('name')
+        # elif self.instance.pk:
+        #     self.fields['teacher'].queryset = self.instance.teacher.teacher_set.order_by('name')
 
-        # Previous code is not needed for intensity since it is a char based field
-        # 
+        if 'schedule' in self.data:
+            try:
+                schedule_id = int(self.data.get('schedule'))
+                self.fields['schedule'].queryset = Schedule.objects.filter(id=schedule_id)
+            except (ValueError, TypeError):
+                pass
+        
+        

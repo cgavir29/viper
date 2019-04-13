@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import Teacher
 from schedules.forms import SetScheduleForm
 from venues.forms import SetVenuesForm
+from academics.models import Class
 
 # Create your views here.
 class LoginView(FormView):
@@ -88,3 +89,9 @@ class TeacherListView(LoginRequiredMixin, ListView):
     redirect_field_name = 'login'
     template_name = 'accounts/teacher_list.html'
     queryset = Teacher.objects.all()
+
+class ClassListView(LoginRequiredMixin, ListView):
+    login_url = '/'
+    redirect_field_name = 'login'
+    template_name = 'accounts/class_list.html'
+    queryset = Class.objects.all()
