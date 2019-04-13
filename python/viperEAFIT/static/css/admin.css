@@ -1,0 +1,52 @@
+/* rgb(8, 76, 131) Azul Oscuro */
+/* rgb(26, 166, 215) Azul Claro */
+
+#header {
+    height: 50px;
+    background: white;
+    color: rgb(8, 76, 131);
+}
+
+#branding h1 {
+    color: #fff;
+}
+
+#header a:link, #header a:visited {
+    color: rgb(8, 76, 131);
+}
+
+#user-tools a {
+    border-bottom: 1px solid rgb(26, 166, 215);
+}
+
+
+a:link,
+a:visited {
+    color: rgb(8, 76, 131);
+}
+
+div.breadcrumbs {
+    /* background: #30caa0; */
+    background: rgb(26, 166, 215);
+    color: rgb(8, 76, 131);
+}
+
+div.breadcrumbs a {
+    color: black;
+}
+
+.module h2, .module caption, .inline-group h2 {
+    background: rgb(26, 166, 215);
+}
+
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: rgb(8, 76, 131);
+    color: white;
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    float: right;
+    border: none;
+    font-weight: 400;
+    background: rgb(26, 166, 215);
+}

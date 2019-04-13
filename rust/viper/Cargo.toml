@@ -1,0 +1,9 @@
+[package]
+name = "general"
+version = "0.1.0"
+authors = ["viper"]
+edition = "2018"
+
+[dependencies]
+hashbrown = "0.1"
+rand = "0.4.0"

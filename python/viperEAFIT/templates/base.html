@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Site Icon -->
+    <link rel="icon" href="{% static 'img/eafit_icon.png' %}">
+    <!-- Load the Bulma css stuff -->
+    <link rel="stylesheet" href="{% static 'css/bulma.css' %}">
+    <!-- Load FontAwesome(icos) css-->
+    <link rel="stylesheet" href="{% static 'css/all.css' %}">
+    <!-- JavaScript jQuery -->
+    <script src=" {% static 'js/jquery-3.3.1.min.js' %} "></script>
+
+    <title>Idiomas EAFIT | Viper</title>
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <section class="hero is-link">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">Idiomas EAFIT</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nav Bar -->
+    {% if user.is_authenticated %}
+        {% include 'partials/_navbar.html' %}
+    {% endif %}
+
+
+    {% block content %}
+
+    {% endblock %}
+
+    
+    <!-- Footer -->
+    {% include 'partials/_footer.html' %}
+
+</body>
+</html>
