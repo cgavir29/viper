@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="subtitle">My Classes</h1>
+
+    <table class="table is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <!-- <th><abbr title="Position">Pos</abbr></th> -->
+                <th>#</th>
+                <th>Curso</th>
+                <th>Intensidad</th>
+                <th>Sede</th>
+                <th>Horario</th>                            
+            </tr>
+        </thead>
+        <tbody>                
+            {% for class in class_list %}
+                <tr>
+                    {{ loop.index }}
+                    <th>{{ loop.index }}</th>
+                    <td>{{ class.course }}</td>
+                    <td>{{ class.intensity }}</td>
+                    <td>{{ class.venue }}</td>
+                    <td>{{ class.schedule }}</td>
+                </tr>
+            {% endfor %}
+    </table>
+</div>
+{% endblock %}
