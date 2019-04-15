@@ -82,7 +82,6 @@ class TeacherDashboardView(LoginRequiredMixin, View):
         }
         return render(request, 'accounts/teacher.html', context)
 
-    
 
 class TeacherListView(LoginRequiredMixin, ListView):
     login_url = '/'
@@ -94,4 +93,7 @@ class ClassListView(LoginRequiredMixin, ListView):
     login_url = '/'
     redirect_field_name = 'login'
     template_name = 'accounts/class_list.html'
-    queryset = Class.objects.all()
+
+    def get_queryset(self):
+        current_teacher = Teacher.objects.get(user=self.request.user)
+        return Class.objects.filter(teacher=current_teacher)
