@@ -8,7 +8,7 @@ from .models import Program, SubProgram, Course, Class
 
 class CreateClassForm(forms.ModelForm):
     subprogram = forms.ModelChoiceField(queryset=SubProgram.objects.none())
-    
+
     class Meta:
         model = Class
         fields = ['subprogram', 'course', 'intensity', 'venue', 'teacher', 'schedule',]

@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
-from django.views.generic import FormView, RedirectView, ListView, View, CreateView
+from django.views.generic import FormView, ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Teacher
 from schedules.forms import SetScheduleForm
 from venues.forms import SetVenuesForm
+from academics.models import Class
+from .models import Teacher
 
-# Create your views here.
+
 class LoginView(FormView):
     """
         Provides the ability to login users to the platform
@@ -87,7 +88,7 @@ class TeacherListView(LoginRequiredMixin, ListView):
     redirect_field_name = 'login'
     template_name = 'accounts/teacher_list.html'
     queryset = Teacher.objects.all()
-<<<<<<< HEAD:viperEAFIT/accounts/views.py
+
 
 class ClassListView(LoginRequiredMixin, ListView):
     login_url = '/'
@@ -97,5 +98,3 @@ class ClassListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         current_teacher = Teacher.objects.get(user=self.request.user)
         return Class.objects.filter(teacher=current_teacher)
-=======
->>>>>>> 86fcc79e947232c005fb2ea589bc4e5f5916f2eb:python/viperEAFIT/accounts/views.py
