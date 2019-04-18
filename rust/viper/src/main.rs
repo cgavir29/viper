@@ -5,10 +5,10 @@
 
 mod horario;
 mod curso;
-mod tester;
 mod profesor;
 mod clase;
-mod escuela; 
+mod escuela;
+mod solucion; 
+mod simdata; 
 fn main() {
-    tester::test_main();
 }

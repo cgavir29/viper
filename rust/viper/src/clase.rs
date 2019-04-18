@@ -2,27 +2,28 @@ use crate::curso::Curso;
 use crate::escuela::Escuela;
 use crate::horario::Horario;
 use crate::profesor::Profesor;
-pub struct Clase {
+pub struct Clase<'a> {
     iden: String,
-    curso: String,
+    curso: &'a Curso,
     sede: String,
     horario: Horario,
     profesor: Profesor,
     candidates: Vec<(String, f64)>,
 }
 
-impl std::fmt::Display for Clase {
+impl <'a> std::fmt::Display for Clase <'a>{
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "clase {}", self.iden)
     }
 }
 
-impl Clase {
+impl <'a> Clase <'a> {
     //i guess iden can be a string since its unique to a class
-    pub fn new(iden: String, curso: &str, sede: &str) -> Clase {
+    // i think there no problem if this lfietime is different lmao
+    pub fn new (iden: String, curso: &'a Curso, sede: &str) -> Clase<'a> {
         Clase {
             iden,
-            curso: curso.to_string(),
+            curso,
             sede: sede.to_string(),
             horario: Horario::new(),
             profesor: Profesor::new("none".to_string()),
@@ -74,12 +75,16 @@ impl Clase {
         prof.get_score()
     }
 
-    pub fn can_teach(&self, prof: &Profesor, escuela: &Escuela) -> bool {
-        if prof.get_sedes().contains(&self.sede) || !prof.is_avail(&self.horario) {
+    pub fn can_teach(&self, prof: &Profesor) -> bool {
+        if !prof.get_sedes().contains(&self.sede) || !prof.is_avail(&self.horario) {
             return false;
         }
-        let this_curso = escuela.get_curso(&self.curso);
-        for r in this_curso.get_reqr() {
+        //i am too lazy to deal with rusts reference bullshit
+        //adding a reference to curso in 
+
+
+        
+        for r in self.curso.get_reqr() {
             if !prof.get_reqr().contains(r) {
                 return false;
             }

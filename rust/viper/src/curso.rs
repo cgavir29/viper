@@ -22,6 +22,11 @@ impl Curso {
         &(self.iden)
     }
 
+    pub fn set_id(&mut self, new_id: String) {
+        self.iden = new_id
+
+    }
+
     pub fn get_reqr(&self) -> &HashSet<String> {
         &(self.reqr)
     }

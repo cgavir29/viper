@@ -87,9 +87,10 @@ impl Horario {
     pub fn set_horario(&mut self, dia: &str, horas: &Vec<i32>, val: &str, state: bool) {
         if state {
             //Add a hashmap in the given day if it hasnt been added yet
-
             for h in horas {
-                (self.diario)
+                // let a: &mut HashMap<i32, String> = (self.diario).get_mut(dia).unwrap();
+                
+                (self.diario)  //HashMap<String, HashMap<i32, String>>
                     .get_mut(dia)
                     .unwrap()
                     .insert(*h, val.to_string());

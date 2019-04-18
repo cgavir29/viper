@@ -1,21 +1,26 @@
 extern crate hashbrown;
-use hashbrown::{HashMap, HashSet};
 use crate::clase::Clase;
-use crate::profesor::Profesor;
 use crate::curso::Curso;
+use crate::profesor::Profesor;
+use hashbrown::{HashMap, HashSet};
+use rand::Rng;
 
-
-pub struct Escuela {
+pub struct Escuela<'a> {
     name: String,
     profs: HashMap<String, Profesor>,
-    clases: HashMap<String, Clase>,
-    cursos: HashMap<String, Curso>, 
+    clases: HashMap<String, Clase<'a>>,
+    cursos: HashMap<String, Curso>,
 }
 
-impl Escuela {
-    pub fn new(name: String) -> Escuela {
-        Escuela {name, profs: HashMap::new(), clases: HashMap::new(),
-                 cursos: HashMap::new(), }
+impl<'a> Escuela<'a> {
+    // i think there no problem if this lfietime is different lmao
+    pub fn new(name: String) -> Escuela<'a> {
+        Escuela {
+            name,
+            profs: HashMap::new(),
+            clases: HashMap::new(),
+            cursos: HashMap::new(),
+        }
     }
 
     pub fn get_profs(&self) -> &HashMap<String, Profesor> {
@@ -36,11 +41,11 @@ impl Escuela {
         &(self.clases)
     }
 
-    pub fn get_clase(&self, claseid: &str) -> &Clase{
+    pub fn get_clase(&self, claseid: &str) -> &Clase {
         self.clases.get(claseid).unwrap()
     }
 
-    pub fn add_clase(&mut self, clase: Clase) {
+    pub fn add_clase(&mut self, clase: Clase<'a>) {
         self.clases.insert(clase.get_id().to_string(), clase);
     }
 
@@ -48,8 +53,11 @@ impl Escuela {
         &(self.cursos)
     }
 
-    pub fn get_curso(&self, cursoid: &str) -> &Curso{
+    pub fn get_curso(&self, cursoid: &str) -> &Curso {
         self.cursos.get(cursoid).unwrap()
-    }    
+    }
 
+    pub fn add_curso(&mut self, curso: Curso) {
+        self.cursos.insert(curso.get_id().to_string(), curso);
+    }
 }

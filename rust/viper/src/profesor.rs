@@ -137,7 +137,7 @@ impl Profesor {
         &(self.sedes)
     }
 
-    pub fn set_sedes(&mut self, sede: &str) {
+    pub fn add_sede(&mut self, sede: &str) {
         self.sedes.insert(sede.to_string());
     }
 
