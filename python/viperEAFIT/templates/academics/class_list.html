@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+        <h1 class="subtitle">Class List</h1>
+
+    <input class="input is-rounded" type="text" placeholder="Search">
+
+    <table class="table is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Course</th>
+                <th>Intensity</th>
+                <th>Venue</th>
+                <th>Schedule</th>
+                <th>Teacher</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for class in class_list %}
+            <tr>
+                {{ loop.index }}
+                <th>{{ class.course }}</th>
+                <td>{{ class.intensity }}</td>
+                <td>{{ class.venue }}</td>
+                <td>{{ class.schedule }}</td>
+                <td>{{ class.teacher }}</td>
+            </tr>
+            {% endfor %}
+    </table>
+</div>
+<br>
+
+{% endblock %}

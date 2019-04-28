@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView
-from accounts.models import Teacher
+from django.views.generic import CreateView, ListView
+from accounts.models import Teacher, Coordinator
 from schedules.models import Schedule
-from .models import Course, Class
+from .models import Program, SubProgram, Course, Class
 from .forms import CreateClassForm
 
 
@@ -59,3 +59,31 @@ def load_schedules(request):
         'schedules': schedules
     }
     return render(request, 'academics/schedule_dropdown_options.html', context)
+
+
+class CoordinatorClassList(LoginRequiredMixin, ListView):
+    login_url = '/'
+    redirect_field_name = 'login'
+    template_name = 'academics/class_list.html'
+
+    def get_queryset(self):
+        current_coordinator = Coordinator.objects.get(user=self.request.user)
+        program = Program.objects.get(coordinator=current_coordinator)
+        print(program.name)
+        subprograms = SubProgram.objects.filter(program=program)
+        print(subprograms)
+        queryset = Class.objects.none()
+        for sp in subprograms:
+            print(sp.name)
+            courses = Course.objects.filter(subprogram=sp)
+            print(courses)
+            for course in courses:
+                print(course)
+                print(Class.objects.filter(course=course))
+                queryset = queryset | Class.objects.filter(course=course)
+
+        # print(queryset)
+
+        return queryset
+
+
