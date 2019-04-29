@@ -77,4 +77,4 @@ class Class(models.Model):
         blank=True,
         null=True
     )
-    # start_date = models.DateField(verbose_name='Start Date (YYYY-MM-DD)', default=timezone.now)
+    end_date = models.DateField(verbose_name='End Date (YYYY-MM-DD)', default=timezone.now)

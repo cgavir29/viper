@@ -11,25 +11,14 @@ class CreateClassForm(forms.ModelForm):
 
     class Meta:
         model = Class
-        fields = ['subprogram', 'course', 'intensity', 'venue', 'teacher', 'schedule',]
+        fields = ['subprogram', 'course', 'intensity', 'venue', 'teacher', 'schedule', 'end_date']
 
     def __init__(self, *args, **kwargs):
         if kwargs.get('user'):
             self.user = kwargs.pop('user', None)
         
-        # Fetch the coordinator's subprograms
-        # programs = Program.objects.all()
-        # current__coor = Coordinator.objects.filter(user=self.user.id)
-        # print(programs[0].coordinator.id, current__coor[0].id)
-        # program_qs = Program.objects.filter(coordinator_id=self.user.id)
-        # print(program_qs)
-        # subprogram_qs = SubProgram.objects.filter(
-        #     program=Program.objects.filter(coordinator=Coordinator.objects.filter(user=self.user.id)[0])[0]
-        # )
-        # print(subprogram_qs)
-        # TRY WITH GET LATER, MIGHT BE EASIER
         subprogram_qs = SubProgram.objects.filter(
-            program=Program.objects.filter(coordinator=Coordinator.objects.filter(user=self.user.id)[0])[0]
+            program=Program.objects.get(coordinator=Coordinator.objects.get(user=self.user.id))
         )
         super().__init__(*args, **kwargs)
         self.fields['subprogram'].queryset = subprogram_qs

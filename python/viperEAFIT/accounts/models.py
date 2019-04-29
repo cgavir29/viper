@@ -25,7 +25,6 @@ class User(AbstractUser):
 
 class Coordinator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # program = models.ForeignKey(Program, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
@@ -44,9 +43,11 @@ class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     identification = models.BigIntegerField(unique=True)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=NOVICIO, blank=True)
+    maxium_hours = models.IntegerField(
+        verbose_name='Maxium Hours',
+        validators=[MinValueValidator(18), MaxValueValidator(40)]
+    )
     availability = models.OneToOneField(Schedule, on_delete=models.CASCADE, blank=True, null=True)
-    # subprograms = models.ManyToManyField(SubProgram, verbose_name='Sub-Programas', related_name='subprograms')
-    # courses = models.ManyToManyField(Course, related_name='courses')
     venues = models.ManyToManyField(Venue, related_name='venues', blank=True)
 
     # Red Flags
