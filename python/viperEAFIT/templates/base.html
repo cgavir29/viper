@@ -22,6 +22,17 @@
 
 <body>
     <!-- Top Bar -->
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container">
+                <a href="{% url 'accounts:login' %}">
+                <img src="{% static 'img/logo_idiomas_eafit.png' %}" alt="Idiomas EAFIT" height="45" width="200"
+                    class="brand_img">
+            </a>
+            </div>
+        </div>
+    </section>
+
     <section class="hero eafit">
         <div class="hero-body">
             <div class="container">
@@ -32,7 +43,7 @@
 
     <!-- Nav Bar -->
     {% if user.is_authenticated %}
-        {% include 'partials/_navbar.html' %}
+    {% include 'partials/_navbar.html' %}
     {% endif %}
 
 
@@ -40,9 +51,10 @@
 
     {% endblock %}
 
-    
+
     <!-- Footer -->
     {% include 'partials/_footer.html' %}
 
 </body>
+
 </html>

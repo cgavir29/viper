@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.views.generic import CreateView, ListView
 from accounts.models import Teacher, Coordinator
 from schedules.models import Schedule
@@ -8,7 +9,6 @@ from .models import Program, SubProgram, Course, Class
 from .forms import CreateClassForm
 
 
-# Create your views here.
 class CreateClassView(LoginRequiredMixin, CreateView):
     model = Class
     form_class = CreateClassForm
@@ -69,20 +69,24 @@ class CoordinatorClassList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         current_coordinator = Coordinator.objects.get(user=self.request.user)
         program = Program.objects.get(coordinator=current_coordinator)
-        print(program.name)
         subprograms = SubProgram.objects.filter(program=program)
-        print(subprograms)
         queryset = Class.objects.none()
         for sp in subprograms:
-            print(sp.name)
             courses = Course.objects.filter(subprogram=sp)
-            print(courses)
             for course in courses:
-                print(course)
-                print(Class.objects.filter(course=course))
                 queryset = queryset | Class.objects.filter(course=course)
 
-        # print(queryset)
+        if 'q' in self.request.GET:
+            query = self.request.GET.get('q')
+            queryset = queryset.filter(
+                Q(course__subprogram__name__icontains=query) |
+                Q(course__name__icontains=query) |
+                Q(intensity__icontains=query) |
+                Q(venue__name__icontains=query) |
+                Q(schedule__name__icontains=query) |
+                Q(teacher__user__first_name__icontains=query) | # Arreglar cuando son nombre y apellido
+                Q(teacher__user__last_name__icontains=query)
+            )
 
         return queryset
 

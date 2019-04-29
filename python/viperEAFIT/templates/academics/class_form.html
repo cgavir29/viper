@@ -3,7 +3,6 @@
 {% load bulma_tags %}
 
 {% block content %}
-<section class="section">
     <div class="container">
         <div class="notification">
             <form method="POST" id="classForm" novalidate
@@ -13,13 +12,14 @@
                 {% csrf_token %}
                 {{ form | bulma }}
                 <div class="field">
-                    <button type="submit" class="button eafit">Create</button>
-                    <a href="{% url 'accounts:coordinator' %}" class="button">Cancel</a>
+                    <button type="submit" class="button eafit is-rounded">Create</button>
+                    <a href="{% url 'accounts:coordinator' %}" class="button is-rounded">Cancel</a>
                 </div>
             </form>
         </div>
     </div>
-</section>
+
+    <br>
 
 <!-- Get subprogram related courses -->
 <script>

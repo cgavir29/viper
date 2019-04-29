@@ -40,7 +40,10 @@ class Course(models.Model):
         unique_together = ('name', 'subprogram')
 
     def __str__(self):
-        return f'{self.subprogram} : {self.name}'
+        return self.name
+
+    # def __str__(self):
+    #     return f'{self.subprogram} : {self.name}'
 
 
 class Class(models.Model):

@@ -1,5 +1,5 @@
 section.eafit {
-    background-color:  rgb(8, 76, 131);
+    background-color:  rgb(4, 57, 90);
 }
 
 h1.eafit {
@@ -7,20 +7,30 @@ h1.eafit {
 }
 
 button.eafit {
-    background-color: rgb(8, 76, 131);
+    background-color: rgb(4, 57, 90);
+    color: white;
+}
+
+button.light-eafit {
+    background-color: rgb(26, 166, 215);
     color: white;
 }
 
 a.button.eafit {
-    background-color: rgb(8, 76, 131);
+    background-color: rgb(4, 57, 90);
     color: white;
 }
 
 footer.eafit {
-    background-color: rgb(26, 166, 215)
+    background-color: rgb(24, 114, 148);
 }
 
 footer p {
-    color: black;
+    color: white;
 }
+
+footer.eafit-info {
+    background-attachment: rgb(238, 238, 238);
+}
+
 

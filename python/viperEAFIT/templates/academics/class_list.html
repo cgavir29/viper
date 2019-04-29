@@ -2,30 +2,40 @@
 
 {% block content %}
 <div class="container">
-        <h1 class="subtitle">Class List</h1>
-
-    <input class="input is-rounded" type="text" placeholder="Search">
-
+    <!-- <h1 class="subtitle">Class List</h1> -->
+    <form action="">
+        <input class="input is-rounded" type="search" placeholder="Search" name="q" value="{{ request.GET.q }}">
+    </form>
+    <br>
     <table class="table is-fullwidth is-hoverable">
         <thead>
             <tr>
                 <th>#</th>
+                <th>SubProgram</th>
                 <th>Course</th>
                 <th>Intensity</th>
                 <th>Venue</th>
                 <th>Schedule</th>
                 <th>Teacher</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             {% for class in class_list %}
             <tr>
-                {{ loop.index }}
-                <th>{{ class.course }}</th>
+                <th>{{ forloop.counter }}</th>
+                <td>{{ class.course.subprogram.name }}</td>
+                <td>{{ class.course }}</td>
                 <td>{{ class.intensity }}</td>
                 <td>{{ class.venue }}</td>
                 <td>{{ class.schedule }}</td>
-                <td>{{ class.teacher }}</td>
+                <td>{% if class.teacher is None %}
+                    ---------
+                    {% else %}
+                    {{ class.teacher }}
+                    {% endif %}
+                </td>
+                <td><button type="submit" class="button is-rounded eafit">Modify</button></td>
             </tr>
             {% endfor %}
     </table>
