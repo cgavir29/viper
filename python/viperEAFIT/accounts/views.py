@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
-from django.views.generic import FormView, ListView, View
+from django.views.generic import FormView, ListView, View, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from schedules.forms import SetScheduleForm
@@ -81,6 +81,25 @@ class TeacherDashboardView(LoginRequiredMixin, View):
             'schedule_form' : schedule_form
         }
         return render(request, 'accounts/teacher.html', context)
+
+
+class TeacherDetailView(LoginView, View):
+    login_url = '/'
+    redirect_field_name = 'login'
+    # template_name = 'accounts/teacher_detail.html'
+    # model = Teacher
+
+    def get(self, request):
+        current_teacher = Teacher.objects.get(user=request.user)
+        context = {
+            'current_teacher': current_teacher,
+        }
+        return render(request, 'accounts/teacher_detail.html', context)
+
+# class TeacherDetailView(DetailView):
+#     model = Teacher
+#     template_name = 'accounts/teacher_detail.html'
+
 
 
 class TeacherListView(LoginRequiredMixin, ListView):

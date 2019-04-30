@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="box">
+        <!-- First Name -->
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">First Name</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <input class="input is-rounded" type="text" value="{{ current_teacher.user.first_name }}"
+                            disabled>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Last Name -->
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Last Name</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <input class="input is-rounded" type="text" value="{{ current_teacher.user.last_name }}"
+                            disabled>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Email -->
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Email</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <input class="input is-rounded" type="email" value="{{ current_teacher.user.email }}">
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Status -->
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Status</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <input class="input is-rounded" type="text" value="{{ current_teacher.status }}" disabled>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Available Hours -->
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Available Hours</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <input class="input is-rounded" type="text" value="{{ current_teacher.maxium_hours }}">
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Sufficiency -->
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Sufficiency</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" name="sufficiency" {% if current_teacher.sufficiency %} checked
+                                {% endif %} disabled>
+                        </label>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Simevi -->
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">SIMEVI</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" name="simevi" {% if current_teacher.simevi %} checked {% endif %}
+                                disabled>
+                        </label>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="has-text-centered">
+            <button type="submit" class="button eafit is-rounded">Update</button>
+            <a href="{% url 'accounts:teacher' %}" class="button is-rounded">Cancel</a>
+        </div>
+    </div>
+</div>
+<br><br>
+{% endblock %}

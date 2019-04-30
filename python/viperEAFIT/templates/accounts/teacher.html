@@ -5,22 +5,10 @@
 {% block content %}
 <section class="section">
     <div class="container">
-        <div class="columns">
-            <div class="column is-one-quarter">
-                <form action="." method="POST">
-                    {{ venues_form | bulma }}
-                    <a class="button eafit">Set Venues</a>
-                </form>
-            </div>
-            <!-- Column Form :3 -->
-            {% for field in schedule_form %}
-                <div class="column">
-                    <strong>{{ field.label_tag }}</strong> {{ field }}
-                </div>
-            {% endfor %}
-        </div>
-        <a class="button eafit is-right">Set Schedule</a>
-        <a href="{% url 'accounts:class_list' %}" class="button eafit">My Classes</a>    
+        <a href="{% url 'accounts:teacher_detail' %}" class="button is-rounded eafit">
+            <i class="fas fa-address-card"></i>&nbsp Personal Info</a>
+        <a href="{% url 'accounts:class_list' %}" class="button is-rounded eafit">
+            <i class="fas fa-book"></i>&nbsp My Classes</a>
     </div>
 </section>
 

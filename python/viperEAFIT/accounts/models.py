@@ -79,6 +79,8 @@ class Teacher(models.Model):
     pcp = models.BooleanField(default=False)
 
 
+    # def get_absolute_url(self):
+    #     return reverse('teacher_detail', kwargs={'pk': self.id})
+
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
-    
