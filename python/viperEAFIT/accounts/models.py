@@ -45,8 +45,8 @@ class Teacher(models.Model):
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=NOVICIO, blank=True)
     maxium_hours = models.IntegerField(
         verbose_name='Maxium Hours',
-        validators=[MinValueValidator(18), MaxValueValidator(40)],
-        blank=True
+        validators=[MaxValueValidator(40)],
+        default=0
     )
     availability = models.OneToOneField(Schedule, on_delete=models.CASCADE, blank=True, null=True)
     venues = models.ManyToManyField(Venue, related_name='venues', blank=True)
