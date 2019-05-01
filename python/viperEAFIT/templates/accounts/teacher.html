@@ -9,6 +9,8 @@
             <i class="fas fa-address-card"></i>&nbsp Personal Info</a>
         <a href="{% url 'accounts:class_list' %}" class="button is-rounded eafit">
             <i class="fas fa-book"></i>&nbsp My Classes</a>
+        <a href="{% url 'accounts:teacher_venues_update' request.user.teacher.id %}" class="button is-rounded eafit">
+            <i class="fas fa-book"></i>&nbsp Set Venues</a>
     </div>
 </section>
 
