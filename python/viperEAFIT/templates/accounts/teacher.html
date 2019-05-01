@@ -5,12 +5,12 @@
 {% block content %}
 <section class="section">
     <div class="container">
-        <a href="{% url 'accounts:teacher_detail' %}" class="button is-rounded eafit">
+        <a href="{% url 'accounts:teacher_detail' request.user.teacher.id %}" class="button is-rounded eafit">
             <i class="fas fa-address-card"></i>&nbsp Personal Info</a>
         <a href="{% url 'accounts:class_list' %}" class="button is-rounded eafit">
             <i class="fas fa-book"></i>&nbsp My Classes</a>
         <a href="{% url 'accounts:teacher_venues_update' request.user.teacher.id %}" class="button is-rounded eafit">
-            <i class="fas fa-book"></i>&nbsp Set Venues</a>
+            <i class="fas fa-building"></i>&nbsp Set Venues</a>
     </div>
 </section>
 

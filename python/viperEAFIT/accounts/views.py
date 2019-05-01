@@ -84,22 +84,14 @@ class TeacherDashboardView(LoginRequiredMixin, View):
         return render(request, 'accounts/teacher.html', context)
 
 
-class TeacherDetailView(LoginView, View):
+class TeacherDetailView(LoginRequiredMixin, DetailView):
     login_url = '/'
     redirect_field_name = 'login'
-    # template_name = 'accounts/teacher_detail.html'
-    # model = Teacher
+    model = Teacher
 
-    def get(self, request):
-        current_teacher = Teacher.objects.get(user=request.user)
-        context = {
-            'current_teacher': current_teacher,
-        }
-        return render(request, 'accounts/teacher_detail.html', context)
+    def get_queryset(self):
+        return Teacher.objects.filter(user=self.request.user)
 
-# class TeacherDetailView(DetailView):
-#     model = Teacher
-#     template_name = 'accounts/teacher_detail.html'
 
 
 
@@ -119,8 +111,9 @@ class ClassListView(LoginRequiredMixin, ListView):
         current_teacher = Teacher.objects.get(user=self.request.user)
         return Class.objects.filter(teacher=current_teacher)
 
+
 class UpdateTeacherVenueUpdate(LoginRequiredMixin, UpdateView):
-    ogin_url = '/'
+    login_url = '/'
     redirect_field_name = 'login'
     model = Teacher
     template_name = 'accounts/teacher_updateVenue_update_form.html'

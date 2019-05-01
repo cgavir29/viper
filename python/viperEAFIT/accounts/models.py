@@ -3,11 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from schedules.models import Schedule
 from venues.models import Venue
-# from academics.models import Program, SubProgram, Course
 
-# from programs.models import Program
 
-# Create your models here.
 class User(AbstractUser):
     TEACHER = 'TC'
     COORDINATOR = 'CO'
@@ -43,8 +40,8 @@ class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     identification = models.BigIntegerField(unique=True)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=NOVICIO, blank=True)
-    maxium_hours = models.IntegerField(
-        verbose_name='Maxium Hours',
+    available_hours = models.IntegerField(
+        verbose_name='Available Hours',
         validators=[MaxValueValidator(40)],
         default=0
     )

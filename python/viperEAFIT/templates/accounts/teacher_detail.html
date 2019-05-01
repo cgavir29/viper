@@ -11,7 +11,7 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <input class="input is-rounded" type="text" value="{{ current_teacher.user.first_name }}"
+                        <input class="input is-rounded" type="text" value="{{ object.user.first_name }}"
                             disabled>
                     </p>
                 </div>
@@ -25,7 +25,7 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <input class="input is-rounded" type="text" value="{{ current_teacher.user.last_name }}"
+                        <input class="input is-rounded" type="text" value="{{ object.user.last_name }}"
                             disabled>
                     </p>
                 </div>
@@ -39,7 +39,7 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <input class="input is-rounded" type="email" value="{{ current_teacher.user.email }}">
+                        <input class="input is-rounded" type="email" value="{{ object.user.email }}">
                     </p>
                 </div>
             </div>
@@ -52,7 +52,7 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <input class="input is-rounded" type="text" value="{{ current_teacher.status }}" disabled>
+                        <input class="input is-rounded" type="text" value="{{ object.status }}" disabled>
                     </p>
                 </div>
             </div>
@@ -65,7 +65,7 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <input class="input is-rounded" type="text" value="{{ current_teacher.maxium_hours }}">
+                        <input class="input is-rounded" type="text" value="{{ object.available_hours }}">
                     </p>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                 <div class="field">
                     <p class="control">
                         <label class="checkbox">
-                            <input type="checkbox" name="sufficiency" {% if current_teacher.sufficiency %} checked
+                            <input type="checkbox" name="sufficiency" {% if object.sufficiency %} checked
                                 {% endif %} disabled>
                         </label>
                     </p>
@@ -95,7 +95,7 @@
                 <div class="field">
                     <p class="control">
                         <label class="checkbox">
-                            <input type="checkbox" name="simevi" {% if current_teacher.simevi %} checked {% endif %}
+                            <input type="checkbox" name="simevi" {% if object.simevi %} checked {% endif %}
                                 disabled>
                         </label>
                     </p>
