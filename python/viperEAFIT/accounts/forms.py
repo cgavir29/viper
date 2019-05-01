@@ -3,6 +3,17 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from accounts.models import User, Coordinator, Teacher
 
+class UpdateTeacherVenueForm(forms.ModelForm):
+
+    class Meta:
+        model = Teacher
+        fields = ['venues']
+        widgets = {
+            'venues' : forms.CheckboxSelectMultiple()
+        }
+        labels = {
+            'venues': ''
+        }
 
 # class CoordinatorCreationForm(UserCreationForm):
 #     first_name = forms.CharField(
