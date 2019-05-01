@@ -32,7 +32,7 @@ class TeacherAdmin(admin.ModelAdmin):
     list_display_links = ('user', )
     fieldsets = (
         (('General Information'), {'fields': ('user', 'identification', 'status',)}),
-        (('Red Flags'), {'fields': ('sufficiency', 'simevi',)}),
+        (('Red Flags'), {'fields': ('sufficiency', 'simevi','venues')}),
         (('Gold Stars'), {'fields': (
             'coor_eval', 'student_eval', 'auto_eval', 'observations', 'pcp',
         )})

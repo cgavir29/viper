@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
-from django.views.generic import FormView, ListView, View, DetailView
+from django.views.generic import FormView, ListView, View, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from schedules.forms import SetScheduleForm
 from venues.forms import SetVenuesForm
 from academics.models import Class
-from .models import Teacher
+from .models import Teacher, User
+from .forms import UpdateTeacherVenueForm
 
 
 class LoginView(FormView):
@@ -117,3 +118,12 @@ class ClassListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         current_teacher = Teacher.objects.get(user=self.request.user)
         return Class.objects.filter(teacher=current_teacher)
+
+class UpdateTeacherVenueUpdate(LoginRequiredMixin, UpdateView):
+    ogin_url = '/'
+    redirect_field_name = 'login'
+    model = Teacher
+    template_name = 'accounts/teacher_updateVenue_update_form.html'
+    form_class = UpdateTeacherVenueForm
+    success_url = '/teacher/'
+    template_name_suffix = '_update_form'
