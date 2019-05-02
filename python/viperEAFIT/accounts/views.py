@@ -87,10 +87,23 @@ class TeacherDashboardView(LoginRequiredMixin, View):
 class TeacherDetailView(LoginRequiredMixin, DetailView):
     login_url = '/'
     redirect_field_name = 'login'
+    template_name = 'accounts/teacher_detail.html'
+    success_url = 'accounts/teacher.html'
     model = Teacher
 
     def get_queryset(self):
         return Teacher.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        current_teacher = Teacher.objects.get(user=request.user)
+        current_teacher.user.email = request.POST['email']
+        current_teacher.available_hours = request.POST['ah']
+        current_teacher.save()
+
+        self.object = self.get_object()
+        context = super(TeacherDetailView, self).get_context_data(**kwargs)
+
+        return render(request, self.success_url, context)
 
 
 
