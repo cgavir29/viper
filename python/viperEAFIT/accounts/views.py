@@ -125,11 +125,10 @@ class ClassListView(LoginRequiredMixin, ListView):
         return Class.objects.filter(teacher=current_teacher)
 
 
-class UpdateTeacherVenueUpdate(LoginRequiredMixin, UpdateView):
+class TeacherVenueUpdate(LoginRequiredMixin, UpdateView):
     login_url = '/'
     redirect_field_name = 'login'
     model = Teacher
-    template_name = 'accounts/teacher_updateVenue_update_form.html'
+    template_name = 'accounts/teacher_venue_update.html'
     form_class = UpdateTeacherVenueForm
     success_url = '/teacher/'
-    template_name_suffix = '_update_form'
