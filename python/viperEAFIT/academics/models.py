@@ -8,7 +8,6 @@ from accounts.models import Coordinator, Teacher
 # Create your models here.
 class Program(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    # llenar sin cordinador y despues ponerlo :3
     coordinator = models.OneToOneField(Coordinator, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     def __str__(self):
@@ -50,19 +49,13 @@ class Class(models.Model):
     class Meta:
         verbose_name_plural = 'classes'
 
-    SEMESTRAL = 'SM'
-    REGULAR = 'RE'
-    SEMI_INTENSIVO = 'SI'
-    INTENSIVO = 'IN'
-    ULTRA = 'UL'
-
+    INTENSIVO = 'Intensivo'
+    SEMI_INTENSIVO = 'Semi-Intensivo'
+    REGULAR = 'Regular'
     INTENSITY_CHOICES = (
-        # (ULTRA, 'Ultra'),
-        (INTENSIVO, 'Intensivo'),
-        # (SEMESTRAL, 'Semestral'),
-        (SEMI_INTENSIVO, 'Semi-Intensivo'),
-        (REGULAR, 'Regular'),
-        
+        (INTENSIVO, INTENSIVO),
+        (SEMI_INTENSIVO, SEMI_INTENSIVO),
+        (REGULAR, REGULAR), 
     )
 
     # class_code =  models.CharField(max_length=15)

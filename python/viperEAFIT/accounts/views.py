@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.views.generic import FormView, ListView, View, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
 from schedules.forms import SetScheduleForm
 from venues.forms import SetVenuesForm
-from academics.models import Class
-from .models import Teacher, User
+from academics.models import Program, SubProgram, Class
+from .models import User, Coordinator, Teacher
 from .forms import UpdateTeacherVenueForm
 
 
@@ -106,13 +107,30 @@ class TeacherDetailView(LoginRequiredMixin, DetailView):
         return render(request, self.success_url, context)
 
 
-
-
 class TeacherListView(LoginRequiredMixin, ListView):
     login_url = '/'
     redirect_field_name = 'login'
     template_name = 'accounts/teacher_list.html'
-    queryset = Teacher.objects.all() # Cambiar esto
+
+    def get_queryset(self):
+        current_coordinator = Coordinator.objects.get(user=self.request.user)
+        program = Program.objects.get(coordinator=current_coordinator)
+        subprograms = SubProgram.objects.filter(program=program)
+        teacher_queryset = Teacher.objects.none()
+        for subprogram in subprograms:
+            teacher_queryset = teacher_queryset | subprogram.teachers.all()
+
+        if 'q' in self.request.GET:
+            query = self.request.GET.get('q')
+            teacher_queryset = teacher_queryset.filter(
+                Q(user__first_name__icontains=query) | # Arreglar cuando son nombre y apellido
+                Q(user__last_name__icontains=query) |
+                Q(user__email__icontains=query) |
+                Q(status__icontains=query) 
+            )
+
+        return teacher_queryset
+
 
 
 class ClassListView(LoginRequiredMixin, ListView):

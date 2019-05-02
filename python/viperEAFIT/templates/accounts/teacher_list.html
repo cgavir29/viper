@@ -4,7 +4,10 @@
 
 <div class="container">
     <h1 class="subtitle">My Teachers</h1>
-
+    <form action="">
+            <input class="input is-rounded" type="search" placeholder="Search" name="q" value="{{ request.GET.q }}">
+        </form>
+        <br>
     <table class="table is-fullwidth is-hoverable">
         <thead>
             <tr>

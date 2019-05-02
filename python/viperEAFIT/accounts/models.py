@@ -28,13 +28,13 @@ class Coordinator(models.Model):
 
 
 class Teacher(models.Model):
-    NOVICIO = 'NV'
-    DOCENTE = 'DC'
-    MASTER = 'MA'
+    NOVICIO = 'Novicio'
+    DOCENTE = 'Docente'
+    MASTER = 'Master'
     STATUS_CHOICES = (
-        (NOVICIO, 'Novicio'),
-        (DOCENTE, 'Docente'),
-        (MASTER, 'Master'),
+        (NOVICIO, NOVICIO),
+        (DOCENTE, DOCENTE),
+        (MASTER, MASTER),
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)

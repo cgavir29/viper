@@ -1,7 +1,7 @@
 from django.db import models
 from multiselectfield import MultiSelectField
 
-# Create your models here.
+
 class Schedule(models.Model):
     TIME_CHOICES = (
         ('6to7', '6:00 - 7:00'),
@@ -21,18 +21,13 @@ class Schedule(models.Model):
         ('20to21', '20:00 - 21:00')
     )
 
-    SEMESTRAL = 'SM'
-    REGULAR = 'RE'
-    SEMI_INTENSIVO = 'SI'
-    INTENSIVO = 'IN'
-    ULTRA = 'UL'
-
+    INTENSIVO = 'Intensivo'
+    SEMI_INTENSIVO = 'Semi-Intensivo'
+    REGULAR = 'Regular'
     INTENSITY_CHOICES = (
-        # (ULTRA, 'Ultra'),
-        (INTENSIVO, 'Intensivo'),
-        # (SEMESTRAL, 'Semestral'),
-        (SEMI_INTENSIVO, 'Semi-Intensivo'),
-        (REGULAR, 'Regular'),
+        (INTENSIVO, INTENSIVO),
+        (SEMI_INTENSIVO, SEMI_INTENSIVO),
+        (REGULAR, REGULAR), 
     )
 
     name = models.CharField(max_length=100, unique=True)

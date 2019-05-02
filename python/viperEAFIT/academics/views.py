@@ -70,15 +70,15 @@ class CoordinatorClassList(LoginRequiredMixin, ListView):
         current_coordinator = Coordinator.objects.get(user=self.request.user)
         program = Program.objects.get(coordinator=current_coordinator)
         subprograms = SubProgram.objects.filter(program=program)
-        queryset = Class.objects.none()
-        for sp in subprograms:
-            courses = Course.objects.filter(subprogram=sp)
+        class_queryset = Class.objects.none()
+        for subprogram in subprograms:
+            courses = Course.objects.filter(subprogram=subprogram)
             for course in courses:
-                queryset = queryset | Class.objects.filter(course=course)
+                class_queryset = class_queryset | Class.objects.filter(course=course)
 
         if 'q' in self.request.GET:
             query = self.request.GET.get('q')
-            queryset = queryset.filter(
+            class_queryset = class_queryset.filter(
                 Q(course__subprogram__name__icontains=query) |
                 Q(course__name__icontains=query) |
                 Q(intensity__icontains=query) |
@@ -88,6 +88,6 @@ class CoordinatorClassList(LoginRequiredMixin, ListView):
                 Q(teacher__user__last_name__icontains=query)
             )
 
-        return queryset
+        return class_queryset
 
 
