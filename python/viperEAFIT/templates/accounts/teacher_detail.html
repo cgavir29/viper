@@ -65,7 +65,8 @@
                 <div class="field-body">
                     <div class="field">
                         <p class="control">
-                            <input class="input is-rounded" type="text" name="ah" value="{{ object.available_hours }}">
+                            <input class="input is-rounded" type="number" name="ah" min="18" max="40"
+                                value="{{ object.available_hours }}">
                         </p>
                     </div>
                 </div>

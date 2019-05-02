@@ -12,8 +12,7 @@ button.eafit {
 }
 
 button.eafit:hover {
-    /* background-color: rgb(26, 166, 215); */
-    background-color: rgb(24, 114, 148);
+    background-color: rgb(26, 166, 215);
     color: white;
 }
 
@@ -29,7 +28,6 @@ a.button.eafit {
 
 a.button.eafit:hover {
     background-color: rgb(26, 166, 215);
-    /* background-color: rgb(24, 114, 148); */
     color: white;
 }
 
