@@ -112,7 +112,7 @@ class TeacherListView(LoginRequiredMixin, ListView):
     login_url = '/'
     redirect_field_name = 'login'
     template_name = 'accounts/teacher_list.html'
-    queryset = Teacher.objects.all()
+    queryset = Teacher.objects.all() # Cambiar esto
 
 
 class ClassListView(LoginRequiredMixin, ListView):
