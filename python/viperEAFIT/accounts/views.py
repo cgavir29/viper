@@ -98,6 +98,7 @@ class TeacherDetailView(LoginRequiredMixin, DetailView):
     def post(self, request, *args, **kwargs):
         current_teacher = Teacher.objects.get(user=request.user)
         current_teacher.user.email = request.POST['email']
+        current_teacher.user.save()
         current_teacher.available_hours = request.POST['ah']
         current_teacher.save()
 
