@@ -11,6 +11,15 @@
             <i class="fas fa-book"></i>&nbsp My Classes</a>
         <a href="{% url 'accounts:teacher_venue_update' request.user.teacher.id %}" class="button is-rounded eafit">
             <i class="fas fa-building"></i>&nbsp Set Venues</a>
+        
+        {% if request.user.teacher.availability == None %}
+        <a href="{% url 'accounts:schedule_create' %}" class="button is-rounded eafit">
+            <i class="fas fa-building"></i>&nbsp Set Schedule</a>
+        {% else %}
+        <a href="{% url 'accounts:schedule_update' request.user.teacher.availability.id %}"
+            class="button is-rounded eafit">
+            <i class="fas fa-building"></i>&nbsp Set Schedule</a>
+        {% endif%}
     </div>
 </section>
 

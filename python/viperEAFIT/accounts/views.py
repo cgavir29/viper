@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
-from django.views.generic import FormView, ListView, View, DetailView, UpdateView
+from django.views.generic import FormView, ListView, View, DetailView, UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
@@ -9,7 +9,9 @@ from venues.forms import SetVenuesForm
 from academics.models import Program, SubProgram, Class
 from .models import User, Coordinator, Teacher
 from .forms import UpdateTeacherVenueForm
-
+from .forms import UpdateTeacherVenueForm, TeacherScheduleForm, TeacherScheduleCreateForm
+from venues.models import Venue
+from schedules.models import Schedule
 
 class LoginView(FormView):
     """
@@ -151,3 +153,31 @@ class TeacherVenueUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'accounts/teacher_venue_update.html'
     form_class = UpdateTeacherVenueForm
     success_url = '/teacher/'
+
+class TeacherScheduleView(LoginRequiredMixin, UpdateView):
+    login_url = '/'
+    redirect_field_name = 'login'
+    model = Schedule
+    template_name = 'accounts/teacher_schedule_update.html'
+    form_class = TeacherScheduleForm
+    success_url = '/teacher/'
+
+class TeacherScheduleCreateView(LoginRequiredMixin, CreateView):
+    login_url = '/'
+    redirect_field_name = 'login'
+    model = Schedule
+    template_name = 'accounts/teacher_schedule_create.html'
+    form_class = TeacherScheduleCreateForm
+    success_url = '/teacher/'
+    
+    # def post(self, request, *args, **kwargs):
+    #     form = TeacherScheduleCreateForm(request.POST)
+    #     if form.is_valid():
+    #         current_teacher = Teacher.objects.get(user=self.request.user)
+    #         new_schedule = form
+    #         new_schedule.save()
+    #         new_schedule.name = current_teacher.id
+    #         new_schedule.save()
+    #         current_teacher.availability = new_schedule.instance
+    #         current_teacher.save()
+    #      return super().post(request, *args, **kwargs)

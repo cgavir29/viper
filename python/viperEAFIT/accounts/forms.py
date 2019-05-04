@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from accounts.models import User, Coordinator, Teacher
+from schedules.models import Schedule
 
 class UpdateTeacherVenueForm(forms.ModelForm):
 
@@ -14,6 +15,31 @@ class UpdateTeacherVenueForm(forms.ModelForm):
         labels = {
             'venues': ''
         }
+
+class TeacherScheduleForm(forms.ModelForm):
+
+    class Meta:
+        model = Schedule
+        fields = ['monday', 'tuesday', 'wednesday',
+                  'thursday', 'friday', 'saturday']
+
+        labels = {
+            'monday': '', 'tuesday': '', 'wednesday': '', 'thursday': '', 'friday': '', 'saturday': ''
+        }
+
+class TeacherScheduleCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = Schedule
+        fields = ['name', 'monday', 'tuesday',
+                  'wednesday', 'thursday', 'friday', 'saturday']
+        widgets = {
+            'name': forms.HiddenInput(attrs={'name': 'name', 'id': 'name'})
+        }
+        labels = {
+            'name': '', 'monday': '', 'tuesday': '', 'wednesday': '', 'thursday': '', 'friday': '', 'saturday': ''
+        }
+
 
 # class CoordinatorCreationForm(UserCreationForm):
 #     first_name = forms.CharField(
