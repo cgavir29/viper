@@ -170,14 +170,14 @@ class TeacherScheduleCreateView(LoginRequiredMixin, CreateView):
     form_class = TeacherScheduleCreateForm
     success_url = '/teacher/'
     
-    # def post(self, request, *args, **kwargs):
-    #     form = TeacherScheduleCreateForm(request.POST)
-    #     if form.is_valid():
-    #         current_teacher = Teacher.objects.get(user=self.request.user)
-    #         new_schedule = form
-    #         new_schedule.save()
-    #         new_schedule.name = current_teacher.id
-    #         new_schedule.save()
-    #         current_teacher.availability = new_schedule.instance
-    #         current_teacher.save()
-    #      return super().post(request, *args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        form = TeacherScheduleCreateForm(request.POST)
+        if form.is_valid():
+            current_teacher = Teacher.objects.get(user=self.request.user)
+            new_schedule = form
+            new_schedule.save()
+            new_schedule.name = current_teacher.id
+            new_schedule.save()
+            current_teacher.availability = new_schedule.instance
+            current_teacher.save()
+        return super().post(request, *args, **kwargs)
