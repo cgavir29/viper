@@ -2,28 +2,28 @@ use crate::curso::Curso;
 use crate::escuela::Escuela;
 use crate::horario::Horario;
 use crate::profesor::Profesor;
-pub struct Clase<'a> {
+pub struct Clase {
     iden: String,
-    curso: &'a Curso,
+    curso: String,
     sede: String,
     horario: Horario,
     profesor: Profesor,
     candidates: Vec<(String, f64)>,
 }
 
-impl <'a> std::fmt::Display for Clase <'a>{
+impl std::fmt::Display for Clase {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "clase {}", self.iden)
     }
 }
 
-impl <'a> Clase <'a> {
+impl Clase {
     //i guess iden can be a string since its unique to a class
     // i think there no problem if this lfietime is different lmao
-    pub fn new (iden: String, curso: &'a Curso, sede: &str) -> Clase<'a> {
+    pub fn new(iden: String, curso: &str, sede: &str) -> Clase {
         Clase {
             iden,
-            curso,
+            curso: curso.to_string(),
             sede: sede.to_string(),
             horario: Horario::new(),
             profesor: Profesor::new("none".to_string()),
@@ -38,7 +38,7 @@ impl <'a> Clase <'a> {
     pub fn get_sede(&self) -> &str {
         &(self.sede)
     }
-
+    
     pub fn get_prof(&self) -> &Profesor {
         if self.profesor.get_id() != "" {
             println!("no teacher assigned to {} yet nigga", self.iden);
@@ -55,9 +55,9 @@ impl <'a> Clase <'a> {
         &(self.horario)
     }
 
-    pub fn set_horario(&mut self, dias: &Vec<String>, horas: &Vec<i32>) {
+    pub fn set_horario(&mut self, dias: &Vec<&str>, horas: &Vec<i32>) {
         for dia in dias {
-            self.horario.set_horario(dia, horas, &self.iden, true)
+            self.horario.set_horario(*dia, horas, &self.iden, true)
         }
     }
 
@@ -75,17 +75,32 @@ impl <'a> Clase <'a> {
         prof.get_score()
     }
 
-    pub fn can_teach(&self, prof: &Profesor) -> bool {
-        if !prof.get_sedes().contains(&self.sede) || !prof.is_avail(&self.horario) {
+    pub fn can_teach(&self, prof: &Profesor, esc: &Escuela) -> bool {
+        
+        
+        if !prof.get_sedes().contains(&self.sede) {
+            // println!("doesnt have sedes");
             return false;
         }
-        //i am too lazy to deal with rusts reference bullshit
-        //adding a reference to curso in 
+
+
+
 
 
         
-        for r in self.curso.get_reqr() {
+        if !prof.is_avail(&self.horario) {
+            // println!("doesnt have hours");
+            return false;
+        }
+
+        //i give up tryna make curso a ref
+
+        let this_curso = esc.get_curso(&self.curso);
+
+        for r in this_curso.get_reqr() {
             if !prof.get_reqr().contains(r) {
+                
+                // println!("{} doesnt have certs {}", prof, r);
                 return false;
             }
         }

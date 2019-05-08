@@ -1,273 +1,214 @@
 import solucion as sol, clase as cl, horario as hr, profesor as pr, simdata as sm, random as rnd
-from helper import copy_prof, merge_hashes
-
-
-# some_cursos = sm.gen_courses()
-# some_clases = sm.gen_clases(some_cursos)
-# some_profs = sm.gen_rand_profs(250, some_clases, 0.7, 1, True)
-# some_clases_index = list(some_clases.keys())
-# # some_clases_index.sort(key=lambda a: len(some_clases[a].candidates))
-# print("we're talking", len(some_profs), "profs")
-# print("and", len(some_clases), "clases")
-
+from copy import deepcopy
 
 def sort_keys(clases_index):
     pass
 
 
-# This function helps us count holerinos in a solution
-def count_holes(sol):
-    sol_asigs = list(sol.clase_prof.keys())  # class id's
-    num = 0
-    for i in sol_asigs:
-        if sol.get_clprof(i) == None:
-            num += 1
-    print(num, "empty assignments")
+def get_clases_index(esc):
+    clases_index = []
+    for iden in esc.get_clases().keys():
+        clases_index.append(iden)
+
+    clases_index.sort(key=lambda x: len(esc.get_clase(x).get_cands()), reverse=True)
+
+    return clases_index
 
 
 # fixes holes with whatever it finds FROM the class candidates
-def rnd_gene_repair(profs, clase, sol):
-    candid = clase.candidates[0][0]  # best solution
-    prof = sol.get_prof(candid)
-    if prof == None:
-        prof = profs[candid]
-
-    while not prof.is_avail(clase.horario):
-        candid = rnd.choice(clase.candidates)[0]
-        prof = sol.get_prof(candid)
-        if prof == None:
-            prof = profs[candid]
-    # if you move to rust, you can make this a reference
-    return prof
+def rnd_gene_repair(esc, clase, sol):
+    
+    # clase.sort_cands()
+    
+    cand_id = rnd.choice(clase.candidates)
+    cand = sol.get_prof(cand_id)
+    # print("im fucking hallucinating", cand)
+    if cand == None:
+        cand = esc.get_prof(cand_id)
+        
+    total_profs = len(clase.get_cands());
+    used_profs = set()
+    
+    # print("HORARIO CLASE\n", clase.get_horario(), "---------------")
+    while (not cand.is_avail(clase.horario)) or ((cand.get_id() in used_profs)):
+        # print(cand, "\n", cand.get_horario())
+        # if not cand.is_avail(clase.horario):
+        #     print("not available")
+        # elif cand.get_id() in used_profs:
+        #     print("in used profs")
+            
+        if len(used_profs) >= total_profs:
+            # print("HOLE")
+            return sol.get_prof("nocand")
+        
+        used_profs.add(cand_id)
+        cand_id = rnd.choice(clase.candidates)
+        cand = sol.get_prof(cand_id)
+        if cand == None:
+            cand = esc.get_prof(cand_id)
+            
+     
+        
+    # print(cand, len(used_profs), clase)
+    # print("im fucking hallucinating again", cand)
+    # print(cand)
+    return cand
 
 
 # gives us a random solution, real good
-def gen_rndsol(profs, clases_index, clases):
+def gen_rndsol(esc):
     solb = sol.Solucion()
-    for claid in clases_index:
-        cla = clases.get(claid)
-        prof = rnd_gene_repair(profs, cla, solb)
-
+    for cla in esc.get_clases().values():
+        # cla.sort_cands(esc)   #already sorted in simdata     
+        prof = rnd_gene_repair(esc, cla, solb)
+        # print("conf", prof)
+        # print(prof.get_horario())
         if solb.get_prof(prof.iden) == None:
             # solb.profs[prof.iden] = [copy_prof(prof), 0]
-            solb.add_prof(copy_prof(prof))
-
+            solb.add_prof(prof)
         solb.set_clprof(cla, prof.iden)
+        # print(prof.get_horario())
+
+        
     return solb
 
 
 # tries to fit every hole with the best possible candidates in the class
-def gene_repair_cands(profs, clase, sol):
-    # print(clase.horario)
-    candid = clase.candidates[0][0]  # best solution
-    prof = sol.get_prof(candid)
+def gene_repair_cands(esc, clase, sol):    
+    cand_id = clase.get_cands()[0]
+    cand = sol.get_prof(cand_id)
+    
+    if cand == None:
+        cand = esc.get_prof(cand_id)
 
-    if prof == None:
-        prof = profs.get(candid)
+    total_profs = len(clase.get_cands())
+    index = 0
+    
+    while not cand.is_avail(clase.horario):
+        if index >= total_profs:
+            return sol.get_prof("nocand")
+        
+        cand_id = clase.get_cands()[index]
+        cand = sol.get_prof(cand_id)
+        if cand == None:
+            cand = esc.get_prof(cand_id)
+            
+        index+=1
+        
 
-    index = 1
-    # print(len(clase.candidates))
-    while not prof.is_avail(clase.horario):
-        # print(pair, "i")
-        # print(prof.is_avail(clase.horario), index)
-        candid = clase.candidates[index][0]
-        prof = sol.get_prof(candid)
-        if prof == None:
-            prof = profs.get(candid)
-        # else:
-        #     print(prof.horario.count_avail())
-
-        index += 1
-    # print(prof.iden, "index", index, "\n")
-    # print(clase.candidates[0:3])
-
-    return prof
+    return cand
 
 
 # uses gene_repair_cands to create a solution
-def greedy_sol(profs, clases_index, clases):
+def greedy_sol(esc, clases_index):
     solb = sol.Solucion()
     for claid in clases_index:
-        cla = clases.get(claid)
-        prof = gene_repair_cands(profs, cla, solb)
+        cla = esc.get_clase(claid)
+        cla.sort_cands(esc)        
+        prof = gene_repair_cands(esc, cla, solb)
 
         if solb.get_prof(prof.iden) == None:
             # solb.profs[prof.iden] = [copy_prof(prof), 0]
-            solb.add_prof(copy_prof(prof))
+            solb.add_prof(prof)
 
         solb.set_clprof(cla, prof.iden)
     return solb
 
 
-def destroy_by_classnum(sol, amount_des, clases):
-    des_cl = {}
-    profs_num_class = list(sol.profs.keys())  # profs id's
-    sol_asigs = list(sol.clase_prof.keys())  # class id's
+def destroy_by_classnum(sol, amount_des, esc):
+    profs_num_clase = list(sol.get_profs().keys())  # profs id's
     # print(sol_asigs)
     # sort prof's id's  by the number of classes
-    profs_num_class.sort(key=lambda x: sol.profs.get(x)[1])
-
-    # delete all assignments of that profesor
+    profs_num_clase.sort(key=lambda x: sol.get_num_clases(x))
+    poor_sods = set()
     for i in range(amount_des):
-        old_prof = profs_num_class[i]
-        # print(type(old_prof))
-        # print(sol.profs.get(old_prof)[1])
-        for j in sol_asigs:
-            asig = sol.clase_prof.get(j)  # the class assignment
-            # if this class is assigned to the prof we're looking for
-            # delete the assignment
-            # it might be none if it was unasigned previously
-            # when removing another teacher
-            if asig != None and asig[0] == old_prof:
-                # making it None should  NOT remove the key,
-                # already testd
-                # print("old prof", old_prof)
-
-                clase = clases.get(j)
-                # print(j, old_prof, list(clase.curso.reqr.keys()))
-                # print(len(clase.candidates))
-                # vals = [x[1] for x in clase.candidates]
-                # print(sum(vals)/len(vals))
-
-                sol.del_clprof(clase)
-                des_cl[j] = 1
-    return des_cl
-
-
-def destroy_rand_cl(sol, rnd_des, clases):
-    sol_asigs = list(sol.clase_prof.keys())  # class id's
-    des_cl = {}
-    for _ in range(rnd_des):
-        # print(sol.active_profs)
-        target_class = rnd.choice(sol_asigs)
-        asig = sol.get_clprof(target_class)
-        while asig == None:  # improve this by changing to a has later
-            target_class = rnd.choice(sol_asigs)
-            asig = sol.get_clprof(target_class)
-
-        des_cl[target_class] = 1
-        clase = clases.get(target_class)
-        sol.del_clprof(clase)
-        asig = sol.get_clprof(target_class)
-        if asig != None:
-            print(index, i, asig)
-            raise NameError("something is not right in destroy_rand_cl 1")
-
-    return des_cl
-
-
-def repair_simple_greedy(sol, clases, profs, holes):
-    index = 0
-    seen = {}
-    holes = list(holes.keys())
-    # THIS WHILE LOOP IS EXPERIMENTAL
-    # i think that destroy by classnum
-    # returns a list that still holds a certain order
-    # i want to see what happens if i get rid of that order
+        poor_sods.add(profs_num_clase[i])        
     
-    while len(seen) < len(holes):
-        hole = rnd.choice(holes)
-        while seen.get(hole)==1:
-            hole = rnd.choice(holes)
-        seen[hole] = 1
-        asig = sol.get_clprof(hole)
-        if asig != None:
-            raise NameError("something is not right in destroy_rand_cl")
-        index += 1
-        clase = clases.get(hole)
-        prof = gene_repair_cands(profs, clase, sol)
-
-        # if the prof has not been added yet
-        if sol.get_prof(prof.iden) == None:
-            sol.add_prof(copy_prof(profs.get(prof.iden)))
-        sol.set_clprof(clase, prof.iden)
-
-
-"""    
-    for i in holes:
-        asig = sol.get_clprof(i)
-        # print(i)
-        if asig != None:
-            print(index, i, asig)
-            raise NameError("something is not right in destroy_rand_cl")
-        index += 1
-        clase = clases.get(i)
-        prof = gene_repair_cands(profs, clase, sol)
-        # prof = gene_repair_cands(profs, clase, sol)
-
-        #if the prof has not been added yet
-        if not sol.get_prof(prof.iden):
-            sol.add_prof(copy_prof(profs.get(prof.iden)))
-        sol.set_clprof(clase, prof.iden)
-"""
-
-
-def balance_class_assigs(sol, clases, profs, holes):
-    # run destroy_rand_cl before this
-    pass
-
-
-def do_lns(sol, profs, clases_index, clases, silly_teachers=0, shook_classes=0, extra_holes = {}):
-
-    sort_keys(clases_index)
-
-    silly_ones = {}
-    if silly_teachers < 0:
-            silly_teachers = int(input("how many underassigned teachers should be removed? "))
-            
-    if silly_teachers:     
-        silly_ones = destroy_by_classnum(sol, silly_teachers, clases)
+    for clase_id in sol.get_clprofs().keys():
+        assig = sol.get_clprof(clase_id)[0]
+        clase = esc.get_clase(clase_id)
+        if assig in poor_sods:
+            sol.add_hole(clase)
         
-    if shook_classes < 0:
-        shook_classes = int(input("how many classes shall be  s h o o k? "))
-    shook_ones = {}
-    if shook_classes:
-        shook_ones = destroy_rand_cl(sol, shook_classes, clases)
 
-    # save the destroyed  classes randomly
-    stupid_hash= merge_hashes(shook_ones, silly_ones)
+
+
+
+def destroy_rand_cl(sol, rnd_des, esc):
+    percent = rnd_des/len(esc.get_clases())*10
+    for clase in esc.get_clases().values():
+        roll = rnd.random() * 10
+        if (roll) <= percent:
+            sol.add_hole(clase)
     
-    repair_simple_greedy(sol, clases, profs,merge_hashes(stupid_hash, extra_holes))
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def destroy_rand_cl_ex(sol, rnd_des, esc):
+    sol_asigs = list(sol.clase_prof.keys())  # class id's
+    used = set()
 
     
-# greed = greedy_sol(some_profs, some_clases_index, some_clases)
-# # greed = gen_rndsol(some_profs, some_clases_index, some_clases)
-# print("greed scored", greed.score, "with", greed.active_profs, "profs")
-# count_holes(greed)
-# do_lns(greed, some_profs, some_clases_index, some_clases, 30, 30)
+    while len(used) <= rnd_des:
+        target_clase_id = rnd.choice(sol_asigs)
+        target_clase = esc.get_clase(target_clase_id)
+        if target_clase_id not in used and not sol.has_hole(target_clase):
+            used.add(target_clase_id)
+            sol.add_hole(target_clase)
+
+        
 
 
-# #t h i s     d o e s n t     c o n s i d e r    c e r t s
-# #this function just takes the best available teachers from the class
-# #doesnt really work too good. will comment
-# eventually, if they allow for teachers who do not have the certs to
-# teach a class, it becomes useful
-# def gene_repair_clprofs(clase, sol):
-#     profs = [x[0] for x in list(sol.profs.values())]
-#     profs.sort(key=lambda x: clase.eval_prof(x), reverse=True)
-#     prof = profs[0]  # best solution
-#     index = 0
-#     # print(len(clase.candidates))
+def repair_greedy(sol, esc):
+    piece_of_shit_me = deepcopy(sol.get_holes())
 
-#     while not prof.is_avail(clase.horario):
-#         prof = profs[index]
-#         # print("cand prof", prof.iden)
-#         index += 1
+    for hole in piece_of_shit_me:
+        clase_ref = esc.get_clase(hole)
+        prof = gene_repair_cands(esc, clase_ref, sol);
+        if sol.get_prof(prof.iden) == None:
+            sol.add_prof(prof)
+        sol.set_clprof(clase_ref, prof.iden)        
+    
+  
 
-# return prof
+def balance_class_assigs(sol, esc):
+    employed_h = lambda t: t.get_horario().get_total_h()
+    aight_teachers = set()
+    for teacher in sol.get_profs():
+        if employed_h > 22: 
+            aight_teachers.add(teacher)
+
+    for (claid, (profid,_)) in sol.get_clprofs().items():
+        prof = sol.get_prof(profid)
+        if prof in aight_teachers:
+            print("finish balance_class_asigs")
+        
+        
+    
+    pass
+    
+    
+    
+
+
+def do_lns(sol, esc, silly_teachers, shook_classes):
+    clases_index = get_clases_index(esc)
+    destroy_by_classnum(sol, silly_teachers, esc)
+    destroy_rand_cl(sol, shook_classes, esc)
+    repair_greedy(sol, esc)
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+
+
+    

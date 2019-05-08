@@ -5,16 +5,16 @@ use crate::profesor::Profesor;
 use hashbrown::{HashMap, HashSet};
 use rand::Rng;
 
-pub struct Escuela<'a> {
+pub struct Escuela {
     name: String,
     profs: HashMap<String, Profesor>,
-    clases: HashMap<String, Clase<'a>>,
+    clases: HashMap<String, Clase>,
     cursos: HashMap<String, Curso>,
 }
 
-impl<'a> Escuela<'a> {
+impl Escuela{
     // i think there no problem if this lfietime is different lmao
-    pub fn new(name: String) -> Escuela<'a> {
+    pub fn new(name: String) -> Escuela {
         Escuela {
             name,
             profs: HashMap::new(),
@@ -45,7 +45,7 @@ impl<'a> Escuela<'a> {
         self.clases.get(claseid).unwrap()
     }
 
-    pub fn add_clase(&mut self, clase: Clase<'a>) {
+    pub fn add_clase(&mut self, clase: Clase) {
         self.clases.insert(clase.get_id().to_string(), clase);
     }
 
@@ -60,4 +60,7 @@ impl<'a> Escuela<'a> {
     pub fn add_curso(&mut self, curso: Curso) {
         self.cursos.insert(curso.get_id().to_string(), curso);
     }
+
+
+    
 }

@@ -43,7 +43,7 @@ impl Profesor {
         &(self.iden)
     }
 
-    pub fn get_sch(&self) -> &Horario {
+    pub fn get_horario(&self) -> &Horario {
         &(self.horario)
     }
 
@@ -57,9 +57,9 @@ impl Profesor {
 
     pub fn copy_self(&self) -> Profesor {
         let mut sch = Horario::new();
-        let this_diario = self.get_sch().get_diario();
+        let this_diario = self.get_horario().get_diario();
         for dia in this_diario.keys() {
-            let hour_class = self.get_sch().get_dia(dia).iter();
+            let hour_class = self.get_horario().get_dia(dia).iter();
             for (hora, val) in hour_class {
                 sch.set_single(dia, *hora, val);
             }
@@ -117,6 +117,19 @@ impl Profesor {
         }
     }
 
+    pub fn copy_avail_sch(&mut self, hor: &Horario) {
+        let dias = hor.get_diario().keys();
+                    let mut horas = Vec::new();
+        for dia in dias {
+            for time in hor.get_dia(dia).keys() {
+                horas.push(*time);
+            }
+            
+            self.horario.set_horario(dia, &horas, "0", true);
+            horas.clear();
+        }
+    }
+
     pub fn get_reqr(&self) -> &HashSet<String> {
         &(self.reqr)
     }
@@ -131,6 +144,8 @@ impl Profesor {
 
     pub fn set_vars(&mut self, key: &str, val: i32) {
         self.variables.insert(key.to_string(), val);
+        //add this here so it updates
+        self.eval_self();
     }
 
     pub fn get_sedes(&self) -> &HashSet<String> {

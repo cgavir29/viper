@@ -1,4 +1,6 @@
 import horario as hr
+
+
 class Clase:
     def __init__(self, iden=None, curso=None, sede=None):
         self.iden = iden
@@ -11,46 +13,69 @@ class Clase:
     def __repr__(self):
         return f"clase: {self.iden}"
 
-    def eval_prof(self, prof):
-        #this whole thing is commented
-        #because it may be that the function
-        #only uses the variables in prof, but
-        #it might change in the future
-        
-        #consider last hour in the same day
-        # score = prof.horario_p.total_h
-        # score = 0
-        # for var in prof.variables:
-        #     score+=prof.variables[var]
+    def get_id(self):
+        return self.iden
 
-        # prof.score = score
-        # return score
-        return prof.score
+    def get_sede(self):
+        return self.sede
 
-    def can_teach(self, prof):
-        if prof.sedes[self.sede]!=1:
-            # print(prof.iden, "doesnt have the sede for", self.iden)
-            return False
-        
-        if not prof.is_avail(self.horario):
-            # print(prof.iden, "doesnt have the horario for", self.iden)  
-            return False
-        
-        for r in self.curso.reqr:
-            
-            if prof.reqr.get(r) == None:
-                # print(prof.iden, "doesnt have the reqr for", self.iden)            
-                return False
-        return True
+    def get_prof(self):
+        if self.profesor:
+            return self.profesor
+        else:
+            return "nocand"
 
     def set_prof(self, prof):
-        self.profesor = prof.iden
+        self.profesor = prof.copy_self()
+
+    def get_horario(self):
+        return self.horario
+    
+    def set_horario(self, dias, horas):
+        for dia in dias:
+            self.horario.set_horario(dia, horas, self.iden, True)
+ 
+    def change_cands(self, cands):
+        self.candidates = cands
+
+    def get_cands(self):
+        return self.candidates
 
     def add_cand(self, prof):
-        self.candidates.append((prof.iden,self.eval_prof(prof)))
+        self.candidates.append(prof.get_id())
+        
+    def eval_prof(self, prof):
+        score = 0.0
+        
+        if prof.get_horario().get_total_h() >= prof.get_mhor():
+            return 0.0
+        
+        score += prof.get_score()
+        return score
 
-    def set_dias(self, dias, horas):
-        for dia in dias:
-            self.horario.set_horario(dia, horas, self.iden)
+    def sort_cands(self, esc):
+        # for cand in self.candidates:
+        #     print(cand)
+        #     self.eval_prof(esc.get_prof(cand))
+        
+        temp_fn = lambda x: self.eval_prof(esc.get_prof(x))
+        self.candidates.sort(key=temp_fn, reverse=True)
+        
+    def can_teach(self, prof, esc):
+        
+        if self.sede not in prof.get_sedes():
+            # print(prof.iden, "doesnt have the sede for", self.iden)
+            return False
 
+        if not prof.is_avail(self.horario):
+            # print(prof.iden, "doesnt have the horario for", self.iden)
+            return False
+
+        this_curso = esc.get_curso(self.curso)
+        
+        for r in this_curso.get_reqr():
+            if r not in prof.get_reqr():
+                # print(prof.iden, "doesnt have reqr for", self.iden)
+                return False
             
+        return True

@@ -78,7 +78,10 @@ impl Horario {
     }
 
     pub fn get_horario(&self, dia: &str, hora: i32) -> &str {
-        (self.diario).get(dia).unwrap().get(&hora).unwrap()
+        match (self.diario).get(dia).unwrap().get(&hora) {
+            Some(y) => y,
+            None => "-1"
+        }
     }
     pub fn set_single(&mut self, dia: &str, hora: i32, val: &str) {
         self.diario.get_mut(dia).unwrap().insert(hora, val.to_string());
@@ -107,5 +110,16 @@ impl Horario {
                 self.total_h -= 1;
             }
         }
+    }
+
+    pub fn equal_to(&self, other: &Horario) -> bool{
+        for dia in self.diario.keys() {
+            for hora in self.get_dia(dia).keys() {
+                if !other.get_dia(dia).contains_key(hora) {
+                    return false
+                }
+            }
+        }
+        true
     }
 }

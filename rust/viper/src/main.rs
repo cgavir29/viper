@@ -9,6 +9,9 @@ mod profesor;
 mod clase;
 mod escuela;
 mod solucion; 
-mod simdata; 
+mod simdata;
+mod lns;
+mod tester; 
 fn main() {
+    tester::test_main();
 }

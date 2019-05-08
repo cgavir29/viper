@@ -1,17 +1,14 @@
 import clase as cl
-import horario as hr
+from horario import Horario
 
 
 class Profesor:
-    def __init__(self, iden, horario = hr.Horario(), score = 0):
+    def __init__(self, iden, horario=None, score=0, max_horas=0):
         self.iden = iden
-
-        self.horario = horario
+        self.horario = Horario()
         # self.horario_p = hr.Horario()  # horario
-
         # corresponde a los llamados "cursos aprobados"
-        self.reqr = {}
-
+        self.reqr = set()
 
         """Ocurre lo mismo que ocurre en curso, se ponen 
         los valores que un profesor tiene. Por ejemplo, un 
@@ -29,78 +26,112 @@ class Profesor:
             "estatus": 0,
         }
 
-        self.max_horas = 0
+        self.sedes = set()
+
+        self.max_horas = max_horas
         # los cursos que el profesor esta dictando, por ejemplo
         # ingles para niños c1 etc...
         # importante para la regla de maximo 4 asignaturas
         # y la repeticion
         # modificado por set_prof
-       # self.cursos = {}
-
+        # self.cursos = {}
         # si es pereira no asignar dos sedes minimo
-        self.sedes = {"u": 0, "s": 0, "l": 0, "b": 0, "r": 0, "p": 0}
-
-        #this works as long as the function ONLY uses the variables
+        # this works as long as the function ONLY uses the variables
         self.score = score
 
     def __repr__(self):
         return f"pr{self.iden}"
 
-    def add_reqr(self, cert):
-        self.reqr[cert] = 1
+    def get_id(self):
+        return self.iden
 
-    def set_var(self, var, val):
-        self.variables[var] = val
+    def get_horario(self):
+        return self.horario
 
-
-
-    def get_sch(self):
-        return self.horario.get_diario()
-    #this only works as long as the class has NOTHING
-    #to do with the evaluation function, which seems
-    #to be the case so far, OTHERWISE, make it so
-    #copy_prof in ga_engine2 copies the parameters
-
-    #this way you dont need to compute the part of the
-    #function that uses the variables everytime
     def eval_self(self):
-        #consider last hour in the same day
-        # score = prof.horario_p.total_h
-        score = 0
-        for var in self.variables:
-            score+=self.variables[var]
+        score = 0.0
+        for var in self.variables.keys():
+            score += self.variables.get(var)
+
         self.score = score
 
+    def copy_self(self):
+        prof = Profesor(self.get_id(), score=self.score, max_horas=self.max_horas)
         
-        
+        this_diario = self.get_horario().get_diario()
+        for dia in this_diario.keys():
+            hour_class = self.get_horario().get_dia(dia)
+            for (hora, val) in hour_class.items():
+                prof.get_horario().set_single(dia, hora, val)
 
-        
+        return prof
+
     def set_avail(self, dias, horas):
-        for dia in dias: 
-            self.horario.set_horario(dia, horas, 0)
-            
+        for dia in dias:
+            self.horario.set_horario(dia, horas, "0", True)
+
     def is_avail(self, horariocl):
-        for dia in list(horariocl.diario.keys()):
-            for hora in horariocl.diario.get(dia):
-                if self.horario.get_horario(dia, hora) != 0:
+        diario = horariocl.get_diario()
+        for dia in diario.keys():
+            horas = horariocl.get_dia(dia).keys()
+            for hora in horas:
+                if self.horario.get_horario(dia, hora) != "0":
+                    # print(dia, hora, self.horario.get_horario(dia, hora))
                     return False
         return True
 
-    # TODO:
     def add_clase(self, clase):
-        # add one to the particular course
-        # val = self.cursos.get(clase.curso.iden)
-        # if val == None:
-        #     self.cursos[clase.curso.iden] = 1
-        # else:
-        #     self.cursos[clase.curso.iden] += 1
+        class_sch = clase.get_horario()
 
-        for dia in list(clase.horario.diario.keys()):
-            self.horario.set_horario(dia, clase.horario.get_dia(dia), clase.iden)
+        for dia in class_sch.get_diario().keys():
+            daily = class_sch.get_dia(dia)
+            for (hora, clase) in daily.items():
+                self.horario.set_single(dia, hora, clase)
 
     def del_clase(self, clase):
-        # sub one from course
+        class_sch = clase.get_horario()
+        for dia in class_sch.get_diario().keys():
+            daily = class_sch.get_dia(dia).keys()
+            for hora in daily:
+                self.horario.set_single(dia, hora, "0", False)
+
+    def copy_avail_sch(self, hor):
+        dias = hor.get_diario().keys()
+        horas = []
+        for dia in dias:
+            for time in hor.get_dia(dia).keys():
+                horas.append(time)
+            self.horario.set_horario(dia, horas, "0", True)
+
+
+
+    def get_reqr(self):
+        return self.reqr
+
+    def add_reqr(self, reqr):
+        self.reqr.add(reqr)
+
+    def get_vars(self):
+        return self.variables
+
+    def set_var(self, key, val):
+        self.variables[key] = val
+
+    def get_var(self, key):
+        return self.variables[key]
+    
+    def get_sedes(self):
+        return self.sedes
+
+    def add_sede(self, sede):
+        self.sedes.add(sede)
+
+    def get_mhor(self):
+        return self.max_horas
+
+    def set_mhor(self, val):
+        self.max_horas = val
         
-        # self.cursos[clase.curso.iden] -=1
-        for dia in list(clase.horario.diario.keys()):
-            self.horario.set_horario(dia, clase.horario.get_dia(dia), clase.iden, state=0)
+    def get_score(self):
+        return self.score
+
