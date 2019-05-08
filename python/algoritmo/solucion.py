@@ -146,7 +146,14 @@ class Solucion:
             rscore+=prof.get_score()
 
         return rscore
-        
+
+
+    def print_to_file(self, filename):
+        f = open(filename, "w")
+        for i in self.profs.values():
+            output = "\n"+str(i[0].iden)+"\n"+str(i[0].horario)
+            f.write(output)
+    
     def print_info(self):
         print("active profs", self.get_actprofs());
         print("score", self.get_score());

@@ -1,5 +1,6 @@
 import random as rnd, solucion as sol, copy, time as tm, simdata as sm, profesor as pr, horario as hr
 import lns
+import copy
 
 # utility functions ----------------------------------
 def chk_sch(prof_col):
@@ -18,7 +19,7 @@ def find_champ(popul, printit = False):
     champ = max(popul, key=lambda a: a.nom_score)
     if printit:
         champ.print_info()
-
+        champ.print_to_file("champ.out"); 
     # print(type(champ))
     return champ
 
@@ -203,7 +204,8 @@ def do_gen(esc, clases_index, p_size, co_rate, mu_rate, gens):
     while gen_count < gens:
         start2 = tm.time()        
         avg_parent_score = 0
-        succs.append(find_champ(population))
+        
+        succs.append(copy.deepcopy(find_champ(population)))
         while len(succs) < p_size:
             parents = roulette(population, 0.6)
             index1 = parents[0]
