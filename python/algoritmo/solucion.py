@@ -165,4 +165,4 @@ class Solucion:
         print("nominal score", self.nom_score, "conf",  self.conf_nom_score())
 
         print("average num of h", average/self.active_profs)        
-        print(unis, "under used teachers\n")
+        #print(unis, "under used teachers\n")
