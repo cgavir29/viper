@@ -19,7 +19,7 @@ def find_champ(popul, printit = False):
     champ = max(popul, key=lambda a: a.nom_score)
     if printit:
         champ.print_info()
-        champ.print_to_file("champ.out"); 
+        # champ.print_to_file("champ.out"); 
     # print(type(champ))
     return champ
 
@@ -67,7 +67,7 @@ def cross_over(esc, clases_index, parent1, parent2, rate):
                 if p2c1prof == None:
                     p2c1prof = esc.get_prof(prof2.iden)
 
-                if not p2c1prof.is_avail(clase.horario):
+                if not p2c1prof.is_avail(clase, esc):
                     child1.add_hole(clase)
                     p2c1prof = None
                     # p2c1prof = gene_repair(profs, clase, child1)
@@ -84,7 +84,7 @@ def cross_over(esc, clases_index, parent1, parent2, rate):
                 if p1c2prof == None:
                     p1c2prof = esc.get_prof(prof1.iden)
 
-                if not p1c2prof.is_avail(clase.horario):
+                if not p1c2prof.is_avail(clase, esc):
                     child2.add_hole(clase)
                     p1c2prof = None
 
@@ -192,7 +192,6 @@ def do_gen(esc, clases_index, p_size, co_rate, mu_rate, gens):
     #not necessary but useful for somethign else
     
     population = rnd_popul(p_size, esc)
-    find_champ(population)
 
     gen_count = 0
 
@@ -237,8 +236,8 @@ def do_gen(esc, clases_index, p_size, co_rate, mu_rate, gens):
 
     print("finished genetic recombination!")
     t_time = tm.time() - start
-    find_champ(population)
     print("found in", t_time, "avg gen took", t_time / gens)
+    return find_champ(population)
 
 
 # increase mutation probability gradually

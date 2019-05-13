@@ -3,7 +3,8 @@ import curso as cr
 import profesor as pr
 
 class Escuela:
-    def __init__(self, name):
+    def __init__(self, name, max_score = 0 ):
+        self.max_score = max_score
         self.name = name
         null_prof = pr.Profesor("nocand");
         null_prof.set_var("nocand", -1000);

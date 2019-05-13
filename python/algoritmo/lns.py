@@ -30,7 +30,7 @@ def rnd_gene_repair(esc, clase, sol):
     used_profs = set()
     
     # print("HORARIO CLASE\n", clase.get_horario(), "---------------")
-    while (not cand.is_avail(clase.horario)) or ((cand.get_id() in used_profs)):
+    while (not cand.is_avail(clase, esc)) or ((cand.get_id() in used_profs)):
         # print(cand, "\n", cand.get_horario())
         # if not cand.is_avail(clase.horario):
         #     print("not available")
@@ -84,7 +84,7 @@ def gene_repair_cands(esc, clase, sol):
     total_profs = len(clase.get_cands())
     index = 0
     
-    while not cand.is_avail(clase.horario):
+    while not cand.is_avail(clase, esc):
         if index >= total_profs:
             return sol.get_prof("nocand")
         
@@ -130,7 +130,6 @@ def destroy_by_classnum(sol, amount_des, esc):
         if assig in poor_sods:
             sol.add_hole(clase)
         
-
 
 
 

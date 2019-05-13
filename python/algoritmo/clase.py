@@ -47,7 +47,7 @@ class Clase:
     def eval_prof(self, prof):
         score = 0.0
         
-        if prof.get_horario().get_total_h() >= prof.get_mhor():
+        if prof.is_overused():
             return 0.0
         
         score += prof.get_score()
@@ -67,7 +67,7 @@ class Clase:
             # print(prof.iden, "doesnt have the sede for", self.iden)
             return False
 
-        if not prof.is_avail(self.horario):
+        if not prof.has_sch(self.horario):
             # print(prof.iden, "doesnt have the horario for", self.iden)
             return False
 

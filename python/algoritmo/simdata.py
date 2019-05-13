@@ -7,7 +7,7 @@ from escuela import Escuela
 
 # horarios = []
 
-
+dias = ["l", "m", "w", "j", "v", "s"]
 
 def gen_rstr(size, prefix=""):
     a = prefix
@@ -64,6 +64,7 @@ def gen_courses(esc):
 def create_clase(dias, horas, sede, clase_ind, curso):
     clase = cl.Clase(curso + sede + str(clase_ind), curso, sede)
     clase.set_horario(dias, horas)
+    clase.get_horario().remove_useless_days()
     return clase
 
 
@@ -365,7 +366,7 @@ def gen_rand_profs(amount, certper, sedper, classper, variables, sedes, esc):
                 prof.add_reqr(reqr)
 
         # assign some variables
-        for var in prof.variables:
+        for var in variables:
             roll = rnd.random()
             if roll < 0.2:
                 prof.set_var(var, rnd.randint(0, 1))
@@ -409,7 +410,9 @@ def assign_cands(esc):
 
 
 def gen_rndesc(prof_amount, certper, sedper, claseper, variabs, sedes):
-    rnd_esc = Escuela("rnd_esc");
+    max_sol_score = prof_amount*5*len(variabs)
+    
+    rnd_esc = Escuela("rnd_esc", max_sol_score);
     gen_courses(rnd_esc)
     # print("there are", len(rnd_esc.get_cursos()), "courses")
     gen_clases(rnd_esc)
@@ -417,6 +420,7 @@ def gen_rndesc(prof_amount, certper, sedper, claseper, variabs, sedes):
     gen_rand_profs(prof_amount, certper, sedper, claseper, variabs, sedes, rnd_esc)
     # print("there are", len(rnd_esc.get_profs()), "profs")    
     assign_cands(rnd_esc)
+    print("cands assigned!-------------------------------------------")
     return rnd_esc
 # courses = gen_courses()
 # print("number of courses", len(courses))

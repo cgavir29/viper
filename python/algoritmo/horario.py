@@ -7,12 +7,12 @@ class Horario:
         # si una franja esta ocupada, significa que se va a utilizar
         # esa hora
         self.diario = {
-            "l": ({}),
-            "m": ({}),
-            "w": ({}),
-            "j": ({}),
-            "v": ({}),
-            "s": ({}),
+            "l": {},
+            "m": {},
+            "w": {},
+            "j": {},
+            "v": {},
+            "s": {},
         }
 
         self.total_h = 0  # total horas en el horario
@@ -81,10 +81,19 @@ class Horario:
        return zeros
 
 
+    def remove_useless_days(self):
+        dias = ['l','m','w','j','v','s']
+        for dia in dias:
+            if len(self.get_dia(dia)) == 0:
+                self.diario.pop(dia)
+        
     def equal_to(self, other):
         for dia in self.diario.keys():
             for hora in self.get_dia(dia).keys():
-                if hora not in other.get_dia(dia).keys():
+                if other.get_dia(dia) != None:
+                    if hora not in other.get_dia(dia).keys():
+                        return False
+                else:
                     return False
         
         return True
