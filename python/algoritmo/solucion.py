@@ -187,5 +187,10 @@ class Solucion:
 
         print("nominal score", self.nom_score, "conf", self.conf_nom_score())
 
+<<<<<<< HEAD
         print("average num of h", average / self.active_profs)
         print(unis, "under used teachers\n")
+=======
+        print("average num of h", average/self.active_profs)        
+        #print(unis, "under used teachers\n")
+>>>>>>> 251e2d8de869e67d39a82425c8d2787f5d59377c
