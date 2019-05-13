@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     # Own
     'accounts.apps.AccountsConfig',
     'venues.apps.VenuesConfig',
-    'schedules.apps.SchedulesConfig',
+    # 'schedules.apps.SchedulesConfig',
+    'schedules',
     'academics.apps.AcademicsConfig',
 
 ]
