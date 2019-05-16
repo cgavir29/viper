@@ -21,7 +21,6 @@ class LoginView(FormView):
     template_name = 'accounts/login.html'
     
     def form_valid(self, form):
-        # If the AuthenticationForm succeeds, log in the user
         login(self.request, form.get_user())
         return super(LoginView, self).form_valid(form)
 
@@ -47,6 +46,7 @@ class LoginView(FormView):
             target_url = 'coordinator'
         else:
             target_url = 'admin'
+
         return str(target_url)
 
 
@@ -62,12 +62,13 @@ class LogoutView(View):
 class CoordinatorDashboardView(LoginRequiredMixin, View):
     login_url = '/'
     redirect_field_name = 'login'
-    
+
     def get(self, request):
         current_user = request.user
         context = {
             'current_user' : current_user,
         }
+
         return render(request, 'accounts/coordinator.html', context)
 
 
@@ -84,6 +85,7 @@ class TeacherDashboardView(LoginRequiredMixin, View):
             'venues_form' : venues_form,
             'schedule_form' : schedule_form
         }
+
         return render(request, 'accounts/teacher.html', context)
 
 
@@ -103,10 +105,8 @@ class TeacherDetailView(LoginRequiredMixin, DetailView):
         current_teacher.user.save()
         current_teacher.available_hours = request.POST['ah']
         current_teacher.save()
-
         self.object = self.get_object()
         context = super(TeacherDetailView, self).get_context_data(**kwargs)
-
         return render(request, self.success_url, context)
 
 
@@ -118,6 +118,7 @@ class TeacherListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         current_coordinator = Coordinator.objects.get(user=self.request.user)
         program = Program.objects.get(coordinator=current_coordinator)
+        # program = Program.objects.get(coor=self.request.user)
         subprograms = SubProgram.objects.filter(program=program)
         teacher_queryset = Teacher.objects.none()
         for subprogram in subprograms:
@@ -129,11 +130,10 @@ class TeacherListView(LoginRequiredMixin, ListView):
                 Q(user__first_name__icontains=query) | # Arreglar cuando son nombre y apellido
                 Q(user__last_name__icontains=query) |
                 Q(user__email__icontains=query) |
-                Q(status__icontains=query) 
+                Q(status__icontains=query)
             )
 
         return teacher_queryset
-
 
 
 class ClassListView(LoginRequiredMixin, ListView):
@@ -154,6 +154,7 @@ class TeacherVenueUpdate(LoginRequiredMixin, UpdateView):
     form_class = UpdateTeacherVenueForm
     success_url = '/teacher/'
 
+
 class TeacherScheduleView(LoginRequiredMixin, UpdateView):
     login_url = '/'
     redirect_field_name = 'login'
@@ -161,6 +162,7 @@ class TeacherScheduleView(LoginRequiredMixin, UpdateView):
     template_name = 'accounts/teacher_schedule_update.html'
     form_class = TeacherScheduleForm
     success_url = '/teacher/'
+
 
 class TeacherScheduleCreateView(LoginRequiredMixin, CreateView):
     login_url = '/'
@@ -170,6 +172,7 @@ class TeacherScheduleCreateView(LoginRequiredMixin, CreateView):
     form_class = TeacherScheduleCreateForm
     success_url = '/teacher/'
     
+
     def post(self, request, *args, **kwargs):
         form = TeacherScheduleCreateForm(request.POST)
         if form.is_valid():
@@ -180,4 +183,5 @@ class TeacherScheduleCreateView(LoginRequiredMixin, CreateView):
             new_schedule.save()
             current_teacher.availability = new_schedule.instance
             current_teacher.save()
+
         return super().post(request, *args, **kwargs)

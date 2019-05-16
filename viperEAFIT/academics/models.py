@@ -2,12 +2,13 @@ from django.db import models
 from django.utils import timezone
 from schedules.models import Schedule
 from venues.models import Venue
-from accounts.models import Coordinator, Teacher
+from accounts.models import User, Coordinator, Teacher
 
 
 # Create your models here.
 class Program(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    # coor = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True, null=True)
     coordinator = models.OneToOneField(Coordinator, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     def __str__(self):

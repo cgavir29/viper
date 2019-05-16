@@ -6,18 +6,20 @@ from venues.models import Venue
 
 
 class User(AbstractUser):
-    TEACHER = 'TC'
-    COORDINATOR = 'CO'
     ADMIN = 'AD'
+    COORDINATOR = 'CO'
+    TEACHER = 'TC'
     USER_TYPE_CHOICES = (
-        (TEACHER, 'Teacher'),
-        (COORDINATOR, 'Coordinator'),
         (ADMIN, 'Admin'),
+        (COORDINATOR, 'Coordinator'),
+        (TEACHER, 'Teacher'),
     )
+    
     first_name = models.CharField(max_length=20, blank=False, verbose_name='First Name')
     last_name = models.CharField(max_length=20, blank=False, verbose_name='Last Name')
     email = models.EmailField(blank=False)
-    user_type = models.CharField(max_length=15, choices=USER_TYPE_CHOICES, blank=False, verbose_name='User Type')
+    # epik_unique_number = models.IntegerField(verbose_name='Epik Unique Number')
+    user_type = models.CharField(max_length=15,choices=USER_TYPE_CHOICES, blank=False, verbose_name='User Type')
 
 
 class Coordinator(models.Model):
@@ -75,9 +77,6 @@ class Teacher(models.Model):
     )
     pcp = models.BooleanField(default=False)
 
-
-    # def get_absolute_url(self):
-    #     return reverse('teacher_detail', kwargs={'pk': self.id})
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'

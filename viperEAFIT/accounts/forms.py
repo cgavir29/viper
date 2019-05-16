@@ -16,16 +16,17 @@ class UpdateTeacherVenueForm(forms.ModelForm):
             'venues': ''
         }
 
+
 class TeacherScheduleForm(forms.ModelForm):
 
     class Meta:
         model = Schedule
         fields = ['monday', 'tuesday', 'wednesday',
                   'thursday', 'friday', 'saturday']
-
         labels = {
             'monday': '', 'tuesday': '', 'wednesday': '', 'thursday': '', 'friday': '', 'saturday': ''
         }
+
 
 class TeacherScheduleCreateForm(forms.ModelForm):
 
