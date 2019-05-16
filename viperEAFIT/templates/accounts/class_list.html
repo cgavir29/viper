@@ -19,8 +19,7 @@
         <tbody>                
             {% for class in class_list %}
                 <tr>
-                    {{ loop.index }}
-                    <th>{{ loop.index }}</th>
+                    <th>{{ forloop.counter }}</th>
                     <td>{{ class.course }}</td>
                     <td>{{ class.intensity }}</td>
                     <td>{{ class.venue }}</td>

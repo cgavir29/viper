@@ -5,6 +5,7 @@ from clase import Clase
 from horario import Horario
 from profesor import Profesor
 from lns import gen_rndsol
+
 os.environ['DJANGO_SETTINGS_MODULE'] = 'viperEAFIT.settings'
 django.setup()
 
@@ -67,10 +68,18 @@ def cast_teacher(teach):
     prof.variables['pcp'] = teach.pcp
     prof.sedes = set(venue.id for venue in teach.venues.all())
     prof.set_mhor(teach.available_hours)
-
     prof.eval_self()
 
     return prof
+
+# -----------------------------------------------------------------
+def save_to_data_base(solc, django_clases, django_teachers):
+    for (class_id, assig_tup) in solc.get_clprofs().items():
+        current_class = django_clases.get(id=class_id)
+        assigned_teacher = assig_tup[0]
+        if assigned_teacher != 'nocand':
+            current_class.teacher = django_teachers.get(id=assigned_teacher)
+            current_class.save()
 
 
 # -----------------------------------------------------------------
@@ -94,8 +103,5 @@ for dt in django_teachers:
 
 esc.assign_cands()
 
-
-# for (cla, obj) in esc.get_clases().items():
-#     print(obj.candidates)
-
-gen_rndsol(esc)
+a = gen_rndsol(esc)
+save_to_data_base(a, django_clases, django_teachers)

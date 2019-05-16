@@ -36,7 +36,7 @@ class TeacherAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (('General Information'), {
-         'fields': ('user', 'identification', 'status',)}),
+         'fields': ('user', 'identification', 'status', 'venues', 'availability')}),
         (('Red Flags'), {'fields': ('sufficiency', 'simevi',)}),
         (('Gold Stars'), {'fields': (
             'coor_eval', 'student_eval', 'auto_eval', 'observations', 'pcp',

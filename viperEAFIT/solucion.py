@@ -40,7 +40,7 @@ class Solucion:
     def print_asigs(self, esc):
         for (clasid, asig_tup) in self.clase_prof.items():
             clase = esc.get_clase(clasid)
-            prof = champ_sol.get_prof(asig_tup[0])
+            prof = self.get_prof(asig_tup[0])
             prof_og = esc.get_prof(asig_tup[0])
 
             print("CLASS-----------------------------")
@@ -76,7 +76,7 @@ class Solucion:
             return None
 
     def add_prof(self, prof):
-        self.profs[prof.iden] = [prof.copy_self(), 0]
+        self.profs[prof.get_id()] = [prof.copy_self(), 0]
 
     def get_clprofs(self):
         return self.clase_prof

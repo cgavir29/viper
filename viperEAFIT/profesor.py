@@ -138,11 +138,17 @@ class Prof_Base:
     def is_avail(self, cl, esc):
         # AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA DONT FORGET THIS IFFFFFFFFFFFFFF
         prof_is_overused = self.is_overused()
+        if prof_is_overused:
+            print("prof is overused")
 
         prof_is_avail = self.has_sch(cl.get_horario())
+        if not prof_is_avail:
+            print("prof is unavail")
         
         # prof_in_time = self.sede_check_2(cl, esc)
         prof_in_time = self.sede_check_2(cl, esc)
+        if not prof_in_time:
+            print("prof cant make it")
         
         return (not prof_is_overused) and prof_is_avail and prof_in_time
 
