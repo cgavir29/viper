@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
-from accounts.models import User, Coordinator, Teacher
+from accounts.models import User, Teacher
 from schedules.models import Schedule
 
 class UpdateTeacherVenueForm(forms.ModelForm):
@@ -40,30 +40,6 @@ class TeacherScheduleCreateForm(forms.ModelForm):
         labels = {
             'name': '', 'monday': '', 'tuesday': '', 'wednesday': '', 'thursday': '', 'friday': '', 'saturday': ''
         }
-
-
-# class CoordinatorCreationForm(UserCreationForm):
-#     first_name = forms.CharField(
-#         label='Nombre',
-#         max_length=20
-#         )
-#     last_name = forms.CharField(
-#         label='Apellido',
-#         max_length=20
-#     )
-#     email = forms.EmailField()
-
-#     class Meta:
-#         model = User
-#         # Fields to be displayed in the form, in that order
-#         fields = ['first_name', 'last_name', 'email', 'username', 'password1', 'password2']
-
-#     def save(self, commit=True):
-#         user = super().save(commit=False)
-#         user.is_coordinator = True
-#         if commit:
-#             user.save()
-#         return user
 
 
 

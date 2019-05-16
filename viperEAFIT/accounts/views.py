@@ -7,8 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from schedules.forms import SetScheduleForm
 from venues.forms import SetVenuesForm
 from academics.models import Program, SubProgram, Class
-from .models import User, Coordinator, Teacher
-from .forms import UpdateTeacherVenueForm
+from .models import User, Teacher
 from .forms import UpdateTeacherVenueForm, TeacherScheduleForm, TeacherScheduleCreateForm
 from venues.models import Venue
 from schedules.models import Schedule
@@ -116,9 +115,9 @@ class TeacherListView(LoginRequiredMixin, ListView):
     template_name = 'accounts/teacher_list.html'
 
     def get_queryset(self):
-        current_coordinator = Coordinator.objects.get(user=self.request.user)
-        program = Program.objects.get(coordinator=current_coordinator)
-        # program = Program.objects.get(coor=self.request.user)
+        # current_coordinator = Coordinator.objects.get(user=self.request.user)
+        # program = Program.objects.get(coordinator=current_coordinator)
+        program = Program.objects.get(coor=self.request.user)
         subprograms = SubProgram.objects.filter(program=program)
         teacher_queryset = Teacher.objects.none()
         for subprogram in subprograms:

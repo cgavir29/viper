@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.views.generic import CreateView, ListView
-from accounts.models import User, Coordinator, Teacher
+from accounts.models import User, Teacher
 from schedules.models import Schedule
 from .models import Program, SubProgram, Course, Class
 from .forms import CreateClassForm
@@ -63,9 +63,9 @@ class CoordinatorClassList(LoginRequiredMixin, ListView):
     template_name = 'academics/class_list.html'
 
     def get_queryset(self):
-        current_coordinator = Coordinator.objects.get(user=self.request.user)
-        program = Program.objects.get(coordinator=current_coordinator)
-        # program = Program.objects.get(coor=self.request.user)
+        # current_coordinator = Coordinator.objects.get(user=self.request.user)
+        # program = Program.objects.get(coordinator=current_coordinator)
+        program = Program.objects.get(coor=self.request.user)
         subprograms = SubProgram.objects.filter(program=program)
         class_queryset = Class.objects.none()
         for subprogram in subprograms:

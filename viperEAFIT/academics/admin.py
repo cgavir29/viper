@@ -4,10 +4,10 @@ from academics.models import Program, SubProgram, Course, Class
 # Register your models here.
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('name', 'coordinator')
+    list_display = ('name', 'coor')
     list_display_links = ('name', )
     list_per_page = 25
-    search_fields = ('name', 'coordinator')
+    search_fields = ('name', 'coor')
 
 
 @admin.register(SubProgram)
