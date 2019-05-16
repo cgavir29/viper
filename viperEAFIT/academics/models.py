@@ -55,10 +55,9 @@ class Class(models.Model):
     INTENSITY_CHOICES = (
         (INTENSIVO, INTENSIVO),
         (SEMI_INTENSIVO, SEMI_INTENSIVO),
-        (REGULAR, REGULAR), 
+        (REGULAR, REGULAR),
     )
 
-    # class_code =  models.CharField(max_length=15)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course')
     intensity = models.CharField(max_length=15, choices=INTENSITY_CHOICES)
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='venue')

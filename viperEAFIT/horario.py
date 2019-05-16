@@ -65,7 +65,7 @@ class Horario:
             for h in horas:
                 self.diario[dia][h] = val
 
-                if val != "0": 
+                if val != "0":
                     self.total_h += 1
         else:
             for h in horas:
@@ -77,16 +77,17 @@ class Horario:
        for d in self.diario.keys():
            for h in self.get_dia(d).keys():
                if self.diario[str(d)][h] == "0":
-                   zeros+=1
+                   zeros += 1
        return zeros
 
 
     def remove_useless_days(self):
-        dias = ['l','m','w','j','v','s']
+        dias = ['l', 'm', 'w', 'j', 'v', 's']
         for dia in dias:
             if len(self.get_dia(dia)) == 0:
                 self.diario.pop(dia)
         
+
     def equal_to(self, other):
         for dia in self.diario.keys():
             for hora in self.get_dia(dia).keys():

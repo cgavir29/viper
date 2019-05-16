@@ -21,8 +21,8 @@ class SubProgramAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'subprogram', 'is_active', )
-    list_display_links = ('name', )
+    list_display = ('id', 'name', 'subprogram', 'is_active', )
+    list_display_links = ('id', 'name', )
     list_per_page = 25
     search_fields = ('name', 'subprogram__name')
     filter_horizontal = ('teachers', )

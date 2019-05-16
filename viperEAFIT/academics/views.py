@@ -41,9 +41,9 @@ def load_teachers(request):
     print(venue)
     #teachers = Teacher.objects.filter(courses__in=course)
     teachers = Course.objects.filter(id=course).values_list('teachers').order_by('name')
-    print(teachers, type(teachers))
+    # print(teachers, type(teachers))
     teachers2 = Teacher.objects.filter(teachers__in=teachers)
-    print(teachers2)
+    # print(teachers2)
     #teachers = Course.objects.filter(teachers__in=course)
     # print(teachers[0].user.username)
     context = {

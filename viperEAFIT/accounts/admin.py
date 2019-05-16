@@ -29,7 +29,7 @@ class CoordinatorAdmin(admin.ModelAdmin):
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('user', 'identification', 'user_first_name',
+    list_display = ('id', 'user', 'identification', 'user_first_name',
                     'user_last_name', 'user_email',)
     list_display_links = ('user', )
     search_fields = ('user__first_name', 'identification', 'user__last_name', 'user__email',)
@@ -37,7 +37,7 @@ class TeacherAdmin(admin.ModelAdmin):
     fieldsets = (
         (('General Information'), {
          'fields': ('user', 'identification', 'status',)}),
-        (('Red Flags'), {'fields': ('sufficiency', 'simevi', 'venues','availability')}),
+        (('Red Flags'), {'fields': ('sufficiency', 'simevi',)}),
         (('Gold Stars'), {'fields': (
             'coor_eval', 'student_eval', 'auto_eval', 'observations', 'pcp',
         )})

@@ -2,12 +2,11 @@ import horario as hr
 
 
 class Clase:
-    def __init__(self, iden=None, curso=None, sede=None):
+    def __init__(self, iden, curso, sede):
         self.iden = iden
         self.curso = curso
         self.sede = sede
-        self.horario = hr.Horario()
-        self.profesor = None
+        self.horario = None
         self.candidates = []
 
     def __repr__(self):
@@ -18,15 +17,6 @@ class Clase:
 
     def get_sede(self):
         return self.sede
-
-    def get_prof(self):
-        if self.profesor:
-            return self.profesor
-        else:
-            return "nocand"
-
-    def set_prof(self, prof):
-        self.profesor = prof.copy_self()
 
     def get_horario(self):
         return self.horario
@@ -53,6 +43,7 @@ class Clase:
         score += prof.get_score()
         return score
 
+
     def sort_cands(self, esc):
         # for cand in self.candidates:
         #     print(cand)
@@ -61,21 +52,18 @@ class Clase:
         temp_fn = lambda x: self.eval_prof(esc.get_prof(x))
         self.candidates.sort(key=temp_fn, reverse=True)
         
-    def can_teach(self, prof, esc):
+    def can_teach(self, prof):
         
         if self.sede not in prof.get_sedes():
-            # print(prof.iden, "doesnt have the sede for", self.iden)
+            # print(prof.id, "doesnt have the sede for", self.iden)
             return False
 
         if not prof.has_sch(self.horario):
-            # print(prof.iden, "doesnt have the horario for", self.iden)
+            # print(prof.id, "doesnt have the horario for", self.iden)
             return False
 
-        this_curso = esc.get_curso(self.curso)
-        
-        for r in this_curso.get_reqr():
-            if r not in prof.get_reqr():
-                # print(prof.iden, "doesnt have reqr for", self.iden)
-                return False
+        if self.curso not in prof.get_reqr():
+            # print(prof.id, "doesnt have reqr for", self.iden)
+            return False
             
         return True

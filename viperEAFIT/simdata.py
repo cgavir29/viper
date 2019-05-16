@@ -1,4 +1,4 @@
-import clase as cl, horario as hr, profesor as pr, curso as cr, random as rnd, time as tm
+import clase as cl, horario as hr, profesor as pr, random as rnd, time as tm
 from escuela import Escuela
 
 # cursos = {}
@@ -393,7 +393,7 @@ def assign_cands(esc):
     profesores = esc.get_profs().values()
     for clase in clases:
         for prof in profesores:
-            if clase.can_teach(prof, esc):
+            if clase.can_teach(prof):
                 clase.add_cand(prof)
                 # print("HIFIFIFIIFIFI")
 
