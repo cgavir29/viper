@@ -23,7 +23,7 @@ class Prof_Base:
         return self.horario
 
     def copy_self(self):
-        prof = Prof_Base(self.iden, self.score, self.max_horas)
+        prof = Prof_Base(self.get_id(), self.score, self.max_horas)
 
         this_diario = self.get_horario().get_diario()
         for dia in this_diario.keys():
