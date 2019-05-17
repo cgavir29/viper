@@ -16,6 +16,7 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Available Hours</th>
+                <th>Venues</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -27,6 +28,11 @@
                 <td>{{ teacher.user.last_name }}</td>
                 <td>{{ teacher.user.email }}</td>
                 <td>{{ teacher.available_hours }}</td>
+                <td>
+                    {% for venue in teacher.venues.all %}
+                        {{ venue }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </td>
                 <td>{{ teacher.status }}</td>
             </tr>
             {% endfor %}

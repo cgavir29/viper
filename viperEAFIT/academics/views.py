@@ -39,7 +39,8 @@ def load_courses(request):
 def load_teachers(request):
     course = request.GET.get('course')
     # venue = request.GET.get('venue')
-    teachers = Course.objects.filter(id=course).values_list('teachers').order_by('name')
+    teachers = Course.objects.get(id=course).teachers.all()
+    # print(teachers)
     context = {
         'teachers': teachers
     }

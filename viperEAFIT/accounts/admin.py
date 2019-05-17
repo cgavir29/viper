@@ -29,11 +29,10 @@ class UserAdmin(DjangoUserAdmin):
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_epik_unique_number','user', 'user_first_name',
-                    'user_last_name', 'user_email',)
+    list_display = ('id', 'user_epik_unique_number', 'user', 'user_first_name',
+                    'user_last_name', 'user_email', 'available_hours')
     list_display_links = ('id', 'user_epik_unique_number', )
-    search_fields = ('user__first_name', 'user__last_name', 'user__email', 'user__epik_unique_number')
-
+    search_fields = ('user__first_name', 'user__last_name', 'user__email', 'user__epik_unique_number', 'available_hours')
     fieldsets = (
         (('General Information'), {
          'fields': ('user', 'status', 'venues', 'availability')}),

@@ -11,15 +11,12 @@ class CreateClassForm(forms.ModelForm):
 
     class Meta:
         model = Class
-        fields = ['subprogram', 'course', 'intensity', 'venue', 'teacher', 'schedule', 'end_date']
+        fields = ['subprogram', 'course', 'intensity', 'venue', 'schedule', 'end_date', 'teacher',]
 
     def __init__(self, *args, **kwargs):
         if kwargs.get('user'):
             self.user = kwargs.pop('user', None)
         
-        # subprogram_qs = SubProgram.objects.filter(
-        #     program=Program.objects.get(coordinator=Coordinator.objects.get(user=self.user.id))
-        # )
         subprogram_qs = SubProgram.objects.filter(
             program=Program.objects.get(coor=self.user.id)
         )

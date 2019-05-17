@@ -30,7 +30,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Class)
 class ClassAdmin(admin.ModelAdmin):
-    list_display = ('id', 'course', 'intensity', 'venue', 'teacher', 'schedule')
+    list_display = ('id', 'course', 'intensity', 'venue', 'schedule', 'teacher',)
     list_display_links = ('id', )
-    list_per_page = 25 # Max listings per page
+    list_per_page = 25
     search_fields = ('id', 'course', 'intensity', 'venue', 'teacher', 'schedule')
