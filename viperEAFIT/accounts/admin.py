@@ -36,10 +36,8 @@ class TeacherAdmin(admin.ModelAdmin):
     fieldsets = (
         (('General Information'), {
          'fields': ('user', 'status', 'venues', 'availability')}),
-        (('Red Flags'), {'fields': ('sufficiency', 'simevi',)}),
-        (('Gold Stars'), {'fields': (
-            'coor_eval', 'student_eval', 'auto_eval', 'observations', 'pcp',
-        )})
+        (('Evaluations and Control'), {'fields': ('sufficiency', 'simevi', 'pdp', 
+        'coor_eval', 'student_eval', 'self_eval', 'observations',)}),
     )
     def user_first_name(self, obj):
         return obj.user.first_name

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.views.generic import FormView, ListView, View, DetailView, UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
 from schedules.forms import SetScheduleForm
@@ -63,9 +64,12 @@ class CoordinatorDashboardView(LoginRequiredMixin, View):
     redirect_field_name = 'login'
 
     def get(self, request):
-        current_user = request.user
+        try:
+            coor_program = Program.objects.get(coor=request.user.id)
+        except ObjectDoesNotExist:
+            coor_program = Program.objects.none()
         context = {
-            'current_user' : current_user,
+            'coor_program' : coor_program,
         }
 
         return render(request, 'accounts/coordinator.html', context)
@@ -76,11 +80,9 @@ class TeacherDashboardView(LoginRequiredMixin, View):
     redirect_field_name = 'login'
  
     def get(self, request):
-        current_user = request.user
         venues_form = SetVenuesForm(request.POST)
         schedule_form = SetScheduleForm(request.POST)
         context = {
-            'current_user' : current_user,
             'venues_form' : venues_form,
             'schedule_form' : schedule_form
         }

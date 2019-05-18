@@ -18,6 +18,7 @@
                 <th>Schedule</th>
                 <th>Teacher</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -36,10 +37,16 @@
                     {% endif %}
                 </td>
                 <td><button type="submit" class="button is-rounded eafit">Modify</button></td>
+                <td>
+                    <a class="button is-danger is-outlined is-rounded">
+                        <span>Delete</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </a>
+                </td>
             </tr>
             {% endfor %}
     </table>
 </div>
-<br>
-
 {% endblock %}
