@@ -1,15 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.views.generic import CreateView, ListView
+from django.views import generic
 from accounts.models import User, Teacher
 from schedules.models import Schedule
 from .models import Program, SubProgram, Course, Class
 from .forms import CreateClassForm
+from django.http import HttpResponseRedirect
 
 
-class CreateClassView(LoginRequiredMixin, CreateView):
+class CreateClassView(LoginRequiredMixin, generic.CreateView):
     model = Class
     form_class = CreateClassForm
     login_url = '/'
@@ -58,14 +59,22 @@ def load_schedules(request):
     return render(request, 'academics/schedule_dropdown_options.html', context)
 
 
-class CoordinatorClassList(LoginRequiredMixin, ListView):
+class CoordinatorClassListView(LoginRequiredMixin, generic.ListView):
     login_url = '/'
     redirect_field_name = 'login'
     template_name = 'academics/class_list.html'
+    success_url = reverse_lazy('academics:class_list')
+
+    def post(self, request, *args, **kwargs):
+        if 'id' in request.POST:
+            class_id = request.POST.get('id')
+            current_class = Class.objects.get(id=class_id)
+            current_class.delete()
+
+        return redirect(self.success_url)
+
 
     def get_queryset(self):
-        # current_coordinator = Coordinator.objects.get(user=self.request.user)
-        # program = Program.objects.get(coordinator=current_coordinator)
         program = Program.objects.get(coor=self.request.user)
         subprograms = SubProgram.objects.filter(program=program)
         class_queryset = Class.objects.none()
@@ -87,5 +96,3 @@ class CoordinatorClassList(LoginRequiredMixin, ListView):
             )
 
         return class_queryset
-
-

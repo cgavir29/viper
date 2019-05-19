@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
-from django.views.generic import FormView, ListView, View, DetailView, UpdateView, CreateView
+from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
@@ -13,7 +13,7 @@ from .forms import UpdateTeacherVenueForm, TeacherScheduleForm, TeacherScheduleC
 from venues.models import Venue
 from schedules.models import Schedule
 
-class LoginView(FormView):
+class LoginView(generic.FormView):
     """
         Provides the ability to login users to the platform
     """
@@ -50,7 +50,7 @@ class LoginView(FormView):
         return str(target_url)
 
 
-class LogoutView(View):
+class LogoutView(generic.View):
     """
         Logs users out
     """
@@ -59,7 +59,7 @@ class LogoutView(View):
         return redirect('accounts:login')
 
 
-class CoordinatorDashboardView(LoginRequiredMixin, View):
+class CoordinatorDashboardView(LoginRequiredMixin, generic.View):
     login_url = '/'
     redirect_field_name = 'login'
 
@@ -75,7 +75,7 @@ class CoordinatorDashboardView(LoginRequiredMixin, View):
         return render(request, 'accounts/coordinator.html', context)
 
 
-class TeacherDashboardView(LoginRequiredMixin, View):
+class TeacherDashboardView(LoginRequiredMixin, generic.View):
     login_url = '/'
     redirect_field_name = 'login'
  
@@ -90,7 +90,7 @@ class TeacherDashboardView(LoginRequiredMixin, View):
         return render(request, 'accounts/teacher.html', context)
 
 
-class TeacherDetailView(LoginRequiredMixin, DetailView):
+class TeacherDetailView(LoginRequiredMixin, generic.DetailView):
     login_url = '/'
     redirect_field_name = 'login'
     template_name = 'accounts/teacher_detail.html'
@@ -111,7 +111,7 @@ class TeacherDetailView(LoginRequiredMixin, DetailView):
         return render(request, self.success_url, context)
 
 
-class TeacherListView(LoginRequiredMixin, ListView):
+class TeacherListView(LoginRequiredMixin, generic.ListView):
     login_url = '/'
     redirect_field_name = 'login'
     template_name = 'accounts/teacher_list.html'
@@ -137,7 +137,7 @@ class TeacherListView(LoginRequiredMixin, ListView):
         return teacher_queryset
 
 
-class ClassListView(LoginRequiredMixin, ListView):
+class ClassListView(LoginRequiredMixin, generic.ListView):
     login_url = '/'
     redirect_field_name = 'login'
     template_name = 'accounts/class_list.html'
@@ -147,7 +147,7 @@ class ClassListView(LoginRequiredMixin, ListView):
         return Class.objects.filter(teacher=current_teacher)
 
 
-class TeacherVenueUpdate(LoginRequiredMixin, UpdateView):
+class TeacherVenueUpdate(LoginRequiredMixin, generic.UpdateView):
     login_url = '/'
     redirect_field_name = 'login'
     model = Teacher
@@ -156,7 +156,7 @@ class TeacherVenueUpdate(LoginRequiredMixin, UpdateView):
     success_url = '/teacher/'
 
 
-class TeacherScheduleView(LoginRequiredMixin, UpdateView):
+class TeacherScheduleView(LoginRequiredMixin, generic.UpdateView):
     login_url = '/'
     redirect_field_name = 'login'
     model = Schedule
@@ -165,7 +165,7 @@ class TeacherScheduleView(LoginRequiredMixin, UpdateView):
     success_url = '/teacher/'
 
 
-class TeacherScheduleCreateView(LoginRequiredMixin, CreateView):
+class TeacherScheduleCreateView(LoginRequiredMixin, generic.CreateView):
     login_url = '/'
     redirect_field_name = 'login'
     model = Schedule
