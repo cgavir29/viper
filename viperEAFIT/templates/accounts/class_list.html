@@ -8,16 +8,18 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Curso</th>
-                <th>Intensidad</th>
-                <th>Sede</th>
-                <th>Horario</th>                            
+                <th>SubProgram</th>
+                <th>Course</th>
+                <th>Intensity</th>
+                <th>Venue</th>
+                <th>Schedule</th>                            
             </tr>
         </thead>
         <tbody>                
             {% for class in class_list %}
                 <tr>
                     <th>{{ forloop.counter }}</th>
+                    <td>{{ class.course.subprogram.name }}</td>
                     <td>{{ class.course }}</td>
                     <td>{{ class.intensity }}</td>
                     <td>{{ class.venue }}</td>

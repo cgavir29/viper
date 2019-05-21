@@ -24,26 +24,34 @@ class CreateClassForm(forms.ModelForm):
         self.fields['subprogram'].queryset = subprogram_qs
         self.fields['course'].queryset = Course.objects.none()
         self.fields['teacher'].queryset = Teacher.objects.none()
+        self.fields['schedule'].queryset = Schedule.objects.none()
+
+        if 'subprogram' in self.data:
+            try:
+                subprogram_id = int(self.data.get('subprogram'))
+                print(Course.objects.filter(subprogram=subprogram_id).order_by('name'))
+                self.fields['course'].queryset = Course.objects.filter(subprogram=subprogram_id).order_by('name')
+            except (ValueError, TypeError):
+                pass
 
         if 'course' in self.data:
             try:
                 course_id = int(self.data.get('course'))
-                self.fields['course'].queryset = Course.objects.filter(id=course_id).order_by('name')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty Course queryset
-        # elif self.instance.pk:
-        #     self.fields['course'].queryset = self.instance.course.course_set.order_by('name')
-
-        if 'teacher' in self.data:
-            try:
-                course_id = int(self.data.get('course'))
-                teacher_id = int(self.data.get('teacher'))
-                self.fields['teacher'].queryset = Teacher.objects.filter(id=teacher_id).order_by('name')
-                #self.fields['teacher'].queryset = Course.objects.filter(teachers__in=course_id).order_by('name')
+                self.fields['teacher'].queryset = Course.objects.get(id=course_id).teachers.all()
             except (ValueError, TypeError):
                 pass
-        #elif self.instance.pk:
-        #    self.fields['teacher'].queryset = self.instance.teacher.teacher_set.order_by('name')
 
-        # Previous code is not needed for intensity since it is a char based field
-        # 
+        if 'intensity' in self.data:
+            try:
+                intensity = self.data.get('intensity')
+                self.fields['schedule'].queryset = Schedule.objects.filter(intensity=intensity)
+            except (ValueError, TypeError):
+                pass
+
+
+class UpdateClassForm(forms.ModelForm):
+
+    class Meta:
+        model = Class
+        fields = ['course', 'intensity', 'venue', 'schedule', 'end_date', 'teacher',]
+

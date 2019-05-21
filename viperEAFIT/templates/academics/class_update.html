@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% load bulma_tags %}
+
+{% block content %}
+<div class="container box">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form | bulma }}
+
+        <div class="has-text-centered">
+            <button type="submit" class="button eafit is-rounded">Save Changes</button>
+            <a href="{% url 'academics:class_list' %}" class="button is-rounded">Cancel</a>
+        </div>
+
+        <!-- Course -->
+        <!-- <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Course</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control">
+                            <input class="input is-rounded" type="text" value="{{ object.course }}" disabled>
+                        </p>
+                    </div>
+                </div>
+            </div> -->
+
+        <!-- Intensity -->
+        <!-- <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Intensity</label>
+                </div>
+                <div class="field-body">
+                    <div class="control">
+                        <div class="select is-rounded">
+                          <select>
+                            <option>{{ object.intensity }}</option>
+                            <option>With options</option>
+                          </select>
+                        </div>
+                      </div>
+                </div>
+            </div> -->
+
+        <!-- Venue -->
+        <!-- <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Venue</label>
+                </div>
+                <div class="field-body">
+                    <div class="control">
+                        <div class="select is-rounded">
+                          <select>
+                            <option>{{ object.venue }}</option>
+                            <option>With options</option>
+                          </select>
+                        </div>
+                      </div>
+                </div>
+            </div> -->
+
+        <!-- Schedule -->
+        <!-- <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Schedule</label>
+                </div>
+                <div class="field-body">
+                    <div class="control">
+                        <div class="select is-rounded">
+                          <select>
+                            <option>{{ object.schedule }}</option>
+                            <option>With options</option>
+                          </select>
+                        </div>
+                      </div>
+                </div>
+            </div> -->
+
+    </form>
+</div>
+{% endblock %}

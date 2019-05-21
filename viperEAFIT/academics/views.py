@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
@@ -6,7 +6,7 @@ from django.views import generic
 from accounts.models import User, Teacher
 from schedules.models import Schedule
 from .models import Program, SubProgram, Course, Class
-from .forms import CreateClassForm
+from .forms import CreateClassForm, UpdateClassForm
 from django.http import HttpResponseRedirect
 
 
@@ -59,6 +59,28 @@ def load_schedules(request):
     return render(request, 'academics/schedule_dropdown_options.html', context)
 
 
+class ClassUpdateView(LoginRequiredMixin, generic.UpdateView):
+    login_url = ''
+    redirect_field_name = 'login'
+    template_name = 'academics/class_update.html'
+    model = Class
+    form_class = UpdateClassForm
+
+    # def get_form_kwargs(self):
+    #     '''This goes in the Update view'''
+    #     kwargs = super(ClassUpdateView, self).get_form_kwargs()
+    #     user = self.request.user
+    #     if user:
+    #         kwargs['user'] = user
+
+    #     return kwargs
+    # def get_object(self):
+    #     print(self.request.POST.get('pk'))
+    #     print(Class.objects.get(id=self.request.GET.get('pk')))
+    #     current_class = get_object_or_404(Class, pk=self.request.GET.get('pk'))
+    #     return current_class
+    
+
 class CoordinatorClassListView(LoginRequiredMixin, generic.ListView):
     login_url = '/'
     redirect_field_name = 'login'
@@ -96,3 +118,4 @@ class CoordinatorClassListView(LoginRequiredMixin, generic.ListView):
             )
 
         return class_queryset
+
