@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Venue(models.Model):
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=25, unique=True)
     address = models.CharField(max_length=120)
     email = models.EmailField()
 

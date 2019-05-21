@@ -3,7 +3,6 @@
 {% load bulma_tags %}
 
 {% block content %}
-<section class="section">
     <div class="container">
         <a href="{% url 'accounts:teacher_detail' request.user.teacher.id %}" class="button is-rounded eafit">
             <i class="fas fa-address-card"></i>&nbsp Personal Info</a>
@@ -21,6 +20,4 @@
             <i class="far fa-calendar-alt"></i>&nbsp Set Schedule</a>
         {% endif%}
     </div>
-</section>
-
 {% endblock %}

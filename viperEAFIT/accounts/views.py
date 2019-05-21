@@ -1,19 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
-from django.views.generic import FormView, ListView, View, DetailView, UpdateView, CreateView
+from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
 from schedules.forms import SetScheduleForm
 from venues.forms import SetVenuesForm
 from academics.models import Program, SubProgram, Class
-from .models import User, Coordinator, Teacher
-from .forms import UpdateTeacherVenueForm
+from .models import User, Teacher
 from .forms import UpdateTeacherVenueForm, TeacherScheduleForm, TeacherScheduleCreateForm
 from venues.models import Venue
 from schedules.models import Schedule
 
-class LoginView(FormView):
+class LoginView(generic.FormView):
     """
         Provides the ability to login users to the platform
     """
@@ -21,7 +21,6 @@ class LoginView(FormView):
     template_name = 'accounts/login.html'
     
     def form_valid(self, form):
-        # If the AuthenticationForm succeeds, log in the user
         login(self.request, form.get_user())
         return super(LoginView, self).form_valid(form)
 
@@ -47,10 +46,11 @@ class LoginView(FormView):
             target_url = 'coordinator'
         else:
             target_url = 'admin'
+
         return str(target_url)
 
 
-class LogoutView(View):
+class LogoutView(generic.View):
     """
         Logs users out
     """
@@ -59,35 +59,38 @@ class LogoutView(View):
         return redirect('accounts:login')
 
 
-class CoordinatorDashboardView(LoginRequiredMixin, View):
+class CoordinatorDashboardView(LoginRequiredMixin, generic.View):
     login_url = '/'
     redirect_field_name = 'login'
-    
+
     def get(self, request):
-        current_user = request.user
+        try:
+            coor_program = Program.objects.get(coor=request.user.id)
+        except ObjectDoesNotExist:
+            coor_program = Program.objects.none()
         context = {
-            'current_user' : current_user,
+            'coor_program' : coor_program,
         }
+
         return render(request, 'accounts/coordinator.html', context)
 
 
-class TeacherDashboardView(LoginRequiredMixin, View):
+class TeacherDashboardView(LoginRequiredMixin, generic.View):
     login_url = '/'
     redirect_field_name = 'login'
  
     def get(self, request):
-        current_user = request.user
         venues_form = SetVenuesForm(request.POST)
         schedule_form = SetScheduleForm(request.POST)
         context = {
-            'current_user' : current_user,
             'venues_form' : venues_form,
             'schedule_form' : schedule_form
         }
+
         return render(request, 'accounts/teacher.html', context)
 
 
-class TeacherDetailView(LoginRequiredMixin, DetailView):
+class TeacherDetailView(LoginRequiredMixin, generic.DetailView):
     login_url = '/'
     redirect_field_name = 'login'
     template_name = 'accounts/teacher_detail.html'
@@ -103,21 +106,20 @@ class TeacherDetailView(LoginRequiredMixin, DetailView):
         current_teacher.user.save()
         current_teacher.available_hours = request.POST['ah']
         current_teacher.save()
-
         self.object = self.get_object()
         context = super(TeacherDetailView, self).get_context_data(**kwargs)
-
         return render(request, self.success_url, context)
 
 
-class TeacherListView(LoginRequiredMixin, ListView):
+class TeacherListView(LoginRequiredMixin, generic.ListView):
     login_url = '/'
     redirect_field_name = 'login'
     template_name = 'accounts/teacher_list.html'
 
     def get_queryset(self):
-        current_coordinator = Coordinator.objects.get(user=self.request.user)
-        program = Program.objects.get(coordinator=current_coordinator)
+        # current_coordinator = Coordinator.objects.get(user=self.request.user)
+        # program = Program.objects.get(coordinator=current_coordinator)
+        program = Program.objects.get(coor=self.request.user)
         subprograms = SubProgram.objects.filter(program=program)
         teacher_queryset = Teacher.objects.none()
         for subprogram in subprograms:
@@ -129,14 +131,13 @@ class TeacherListView(LoginRequiredMixin, ListView):
                 Q(user__first_name__icontains=query) | # Arreglar cuando son nombre y apellido
                 Q(user__last_name__icontains=query) |
                 Q(user__email__icontains=query) |
-                Q(status__icontains=query) 
+                Q(status__icontains=query)
             )
 
         return teacher_queryset
 
 
-
-class ClassListView(LoginRequiredMixin, ListView):
+class ClassListView(LoginRequiredMixin, generic.ListView):
     login_url = '/'
     redirect_field_name = 'login'
     template_name = 'accounts/class_list.html'
@@ -146,7 +147,7 @@ class ClassListView(LoginRequiredMixin, ListView):
         return Class.objects.filter(teacher=current_teacher)
 
 
-class TeacherVenueUpdate(LoginRequiredMixin, UpdateView):
+class TeacherVenueUpdate(LoginRequiredMixin, generic.UpdateView):
     login_url = '/'
     redirect_field_name = 'login'
     model = Teacher
@@ -154,7 +155,8 @@ class TeacherVenueUpdate(LoginRequiredMixin, UpdateView):
     form_class = UpdateTeacherVenueForm
     success_url = '/teacher/'
 
-class TeacherScheduleView(LoginRequiredMixin, UpdateView):
+
+class TeacherScheduleView(LoginRequiredMixin, generic.UpdateView):
     login_url = '/'
     redirect_field_name = 'login'
     model = Schedule
@@ -162,7 +164,8 @@ class TeacherScheduleView(LoginRequiredMixin, UpdateView):
     form_class = TeacherScheduleForm
     success_url = '/teacher/'
 
-class TeacherScheduleCreateView(LoginRequiredMixin, CreateView):
+
+class TeacherScheduleCreateView(LoginRequiredMixin, generic.CreateView):
     login_url = '/'
     redirect_field_name = 'login'
     model = Schedule
@@ -170,6 +173,7 @@ class TeacherScheduleCreateView(LoginRequiredMixin, CreateView):
     form_class = TeacherScheduleCreateForm
     success_url = '/teacher/'
     
+
     def post(self, request, *args, **kwargs):
         form = TeacherScheduleCreateForm(request.POST)
         if form.is_valid():
@@ -180,4 +184,5 @@ class TeacherScheduleCreateView(LoginRequiredMixin, CreateView):
             new_schedule.save()
             current_teacher.availability = new_schedule.instance
             current_teacher.save()
+
         return super().post(request, *args, **kwargs)

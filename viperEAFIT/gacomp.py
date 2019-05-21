@@ -32,8 +32,8 @@ def rnd_popul(size, esc):
         print("solution", i, "done in", tm.time() - ini_ind, end="\r")
     return population
 
-def cross_over(esc, clases_index, parent1, parent2, rate):
 
+def cross_over(esc, clases_index, parent1, parent2, rate):
     roll = rnd.random()
     child1 = sol.Solucion()
     child2 = sol.Solucion()

@@ -1,6 +1,6 @@
 from django import forms
 from venues.models import Venue
-from accounts.models import Teacher, Coordinator
+from accounts.models import User, Teacher
 from schedules.models import Schedule
 from schedules.forms import SetScheduleForm
 from .models import Program, SubProgram, Course, Class
@@ -11,14 +11,14 @@ class CreateClassForm(forms.ModelForm):
 
     class Meta:
         model = Class
-        fields = ['subprogram', 'course', 'intensity', 'venue', 'teacher', 'schedule', 'end_date']
+        fields = ['subprogram', 'course', 'intensity', 'venue', 'schedule', 'end_date', 'teacher',]
 
     def __init__(self, *args, **kwargs):
         if kwargs.get('user'):
             self.user = kwargs.pop('user', None)
         
         subprogram_qs = SubProgram.objects.filter(
-            program=Program.objects.get(coordinator=Coordinator.objects.get(user=self.user.id))
+            program=Program.objects.get(coor=self.user.id)
         )
         super().__init__(*args, **kwargs)
         self.fields['subprogram'].queryset = subprogram_qs

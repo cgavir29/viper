@@ -2,12 +2,20 @@
 
 {% block content %}
 <div class="container">
+  {% if coor_program %}
   <a href="{% url 'academics:create_class' %}" class="button is-rounded eafit"><i class="fas fa-book"></i>&nbsp Create Class</a>
   <a href="{% url 'academics:class_list' %}" class="button is-rounded eafit"><i class="fas fa-search"></i>&nbsp Search Classes</a>
   <a href="{% url 'accounts:teacher_list' %}" class="button is-rounded eafit"><i
       class="fas fa-chalkboard-teacher"></i>&nbsp My Teachers</a>
-
-
+  {% else %}
+  <article class="message is-danger">
+      <div class="message-header">
+        <p>Missing Program</p>
+      </div>
+      <div class="message-body">
+        You haven't been assigned to any program yet. Please contact <strong>Idiomas EAFIT</strong> for support.
+      </div>
+    </article>
+  {% endif %}
 </div>
-<br>
 {% endblock %}

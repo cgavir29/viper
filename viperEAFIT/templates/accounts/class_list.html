@@ -4,11 +4,9 @@
 
 <div class="container">
     <h1 class="subtitle">My Classes</h1>
-
     <table class="table is-fullwidth is-hoverable">
         <thead>
             <tr>
-                <!-- <th><abbr title="Position">Pos</abbr></th> -->
                 <th>#</th>
                 <th>Curso</th>
                 <th>Intensidad</th>
@@ -19,8 +17,7 @@
         <tbody>                
             {% for class in class_list %}
                 <tr>
-                    {{ loop.index }}
-                    <th>{{ loop.index }}</th>
+                    <th>{{ forloop.counter }}</th>
                     <td>{{ class.course }}</td>
                     <td>{{ class.intensity }}</td>
                     <td>{{ class.venue }}</td>
@@ -29,5 +26,4 @@
             {% endfor %}
     </table>
 </div>
-<br><br>
 {% endblock %}

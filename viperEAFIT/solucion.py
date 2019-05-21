@@ -40,7 +40,7 @@ class Solucion:
     def print_asigs(self, esc):
         for (clasid, asig_tup) in self.clase_prof.items():
             clase = esc.get_clase(clasid)
-            prof = champ_sol.get_prof(asig_tup[0])
+            prof = self.get_prof(asig_tup[0])
             prof_og = esc.get_prof(asig_tup[0])
 
             print("CLASS-----------------------------")
@@ -76,7 +76,7 @@ class Solucion:
             return None
 
     def add_prof(self, prof):
-        self.profs[prof.iden] = [prof.copy_self(), 0]
+        self.profs[prof.get_id()] = [prof.copy_self(), 0]
 
     def get_clprofs(self):
         return self.clase_prof
@@ -187,10 +187,5 @@ class Solucion:
 
         print("nominal score", self.nom_score, "conf", self.conf_nom_score())
 
-<<<<<<< HEAD
         print("average num of h", average / self.active_profs)
         print(unis, "under used teachers\n")
-=======
-        print("average num of h", average/self.active_profs)        
-        #print(unis, "under used teachers\n")
->>>>>>> 251e2d8de869e67d39a82425c8d2787f5d59377c

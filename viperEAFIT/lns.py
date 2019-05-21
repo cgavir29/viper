@@ -17,33 +17,27 @@ def get_clases_index(esc):
 
 # fixes holes with whatever it finds FROM the class candidates
 def rnd_gene_repair(esc, clase, sol):
-    
-    # clase.sort_cands()
-    
+    total_profs = len(clase.get_cands());
+
+    if total_profs == 0:
+        return sol.get_prof("nocand")
+
     cand_id = rnd.choice(clase.candidates)
     cand = sol.get_prof(cand_id)
-    # print("im fucking hallucinating", cand)
+
     if cand == None:
         cand = esc.get_prof(cand_id)
-        
-    total_profs = len(clase.get_cands());
+
     used_profs = set()
     
-    # print("HORARIO CLASE\n", clase.get_horario(), "---------------")
     while (not cand.is_avail(clase, esc)) or ((cand.get_id() in used_profs)):
-        # print(cand, "\n", cand.get_horario())
-        # if not cand.is_avail(clase.horario):
-        #     print("not available")
-        # elif cand.get_id() in used_profs:
-        #     print("in used profs")
-            
         if len(used_profs) >= total_profs:
-            # print("HOLE")
             return sol.get_prof("nocand")
         
         used_profs.add(cand_id)
         cand_id = rnd.choice(clase.candidates)
         cand = sol.get_prof(cand_id)
+        
         if cand == None:
             cand = esc.get_prof(cand_id)
             
@@ -63,10 +57,10 @@ def gen_rndsol(esc):
         prof = rnd_gene_repair(esc, cla, solb)
         # print("conf", prof)
         # print(prof.get_horario())
-        if solb.get_prof(prof.iden) == None:
+        if solb.get_prof(prof.get_id()) == None:
             # solb.profs[prof.iden] = [copy_prof(prof), 0]
             solb.add_prof(prof)
-        solb.set_clprof(cla, prof.iden)
+        solb.set_clprof(cla, prof.get_id())
         # print(prof.get_horario())
 
         
@@ -74,14 +68,18 @@ def gen_rndsol(esc):
 
 
 # tries to fit every hole with the best possible candidates in the class
-def gene_repair_cands(esc, clase, sol):    
+def gene_repair_cands(esc, clase, sol): 
+    total_profs = len(clase.get_cands())
+
+    if total_profs == 0:
+        return sol.get_prof("nocand")
+
     cand_id = clase.get_cands()[0]
     cand = sol.get_prof(cand_id)
     
     if cand == None:
         cand = esc.get_prof(cand_id)
 
-    total_profs = len(clase.get_cands())
     index = 0
     
     while not cand.is_avail(clase, esc):
@@ -93,7 +91,7 @@ def gene_repair_cands(esc, clase, sol):
         if cand == None:
             cand = esc.get_prof(cand_id)
             
-        index+=1
+        index += 1
         
 
     return cand

@@ -4,22 +4,23 @@ from multiselectfield import MultiSelectField
 
 class Schedule(models.Model):
     TIME_CHOICES = (
-        ('6to7', ''),
-        ('7to8', ''),
-        ('8to9', ''),
-        ('9to10', ''),
-        ('10to11', ''),
-        ('11to12', ''),
-        ('12to13', ''),
-        ('13to14', ''),
-        ('14to15', ''),
-        ('15to16', ''),
-        ('16to17', ''),
-        ('17to18', ''),
-        ('18to19', ''),
-        ('19to20', ''),
-        ('20to21', '')
+        ('6', '6:00 - 7:00'),
+        ('7', '7:00 - 8:00'),
+        ('8', '8:00 - 9:00'),
+        ('9', '9:00 - 10:00'),
+        ('10', '10:00 - 11:00'),
+        ('11', '11:00 - 12:00'),
+        ('12', '12:00 - 13:00'),
+        ('13', '13:00 - 14:00'),
+        ('14', '14:00 - 15:00'),
+        ('15', '15:00 - 16:00'),
+        ('16', '16:00 - 17:00'),
+        ('17', '17:00 - 18:00'),
+        ('18', '18:00 - 19:00'),
+        ('19', '19:00 - 20:00'),
+        ('20', '20:00 - 21:00')
     )
+
 
     INTENSIVO = 'Intensivo'
     SEMI_INTENSIVO = 'Semi-Intensivo'
@@ -27,7 +28,7 @@ class Schedule(models.Model):
     INTENSITY_CHOICES = (
         (INTENSIVO, INTENSIVO),
         (SEMI_INTENSIVO, SEMI_INTENSIVO),
-        (REGULAR, REGULAR), 
+        (REGULAR, REGULAR),
     )
 
     name = models.CharField(max_length=100, unique=True)

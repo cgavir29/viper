@@ -1,20 +1,20 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
-from accounts.models import User, Coordinator, Teacher
+from accounts.models import User, Teacher
 
 
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):
-    list_display = ('username', 'first_name',
-                    'last_name', 'email', 'user_type')
-    list_display_links = ('username', )
+    list_display = ('epik_unique_number', 'username', 'first_name',
+                    'last_name', 'email', 'user_type', )
+    list_display_links = ('epik_unique_number', )
     list_per_page = 25
-    search_fields = ('first_name', 'last_name', 'email', )
+    search_fields = ('first_name', 'last_name', 'email', 'username', 'epik_unique_number')
     add_fieldsets = (
         (None, {
             'fields': (
-                'first_name', 'last_name', 'email', 'username',
+                'first_name', 'last_name', 'email', 'epik_unique_number', 'username',
                 'password1', 'password2', 'user_type',
             )
         }
@@ -22,27 +22,23 @@ class UserAdmin(DjangoUserAdmin):
     )
 
 
-@admin.register(Coordinator)
-class CoordinatorAdmin(admin.ModelAdmin):
-    list_display = ('user', )
+# @admin.register(Coordinator)
+# class CoordinatorAdmin(admin.ModelAdmin):
+#     list_display = ('user', )
 
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('user', 'identification', 'user_first_name',
-                    'user_last_name', 'user_email',)
-    list_display_links = ('user', )
-    search_fields = ('user__first_name', 'identification', 'user__last_name', 'user__email',)
-
+    list_display = ('id', 'user_epik_unique_number', 'user', 'user_first_name',
+                    'user_last_name', 'user_email', 'available_hours')
+    list_display_links = ('id', 'user_epik_unique_number', )
+    search_fields = ('user__first_name', 'user__last_name', 'user__email', 'user__epik_unique_number', 'available_hours')
     fieldsets = (
         (('General Information'), {
-         'fields': ('user', 'identification', 'status',)}),
-        (('Red Flags'), {'fields': ('sufficiency', 'simevi', 'venues','availability')}),
-        (('Gold Stars'), {'fields': (
-            'coor_eval', 'student_eval', 'auto_eval', 'observations', 'pcp',
-        )})
+         'fields': ('user', 'status', 'venues', 'availability')}),
+        (('Evaluations and Control'), {'fields': ('sufficiency', 'simevi', 'pdp', 
+        'coor_eval', 'student_eval', 'self_eval', 'observations',)}),
     )
-    # filter_horizontal = ('courses', 'subprograms')
     def user_first_name(self, obj):
         return obj.user.first_name
     user_first_name.short_description = "First Name"
@@ -57,6 +53,12 @@ class TeacherAdmin(admin.ModelAdmin):
         return obj.user.email
     user_email.short_description = "Email"
     user_email.admin_order_field = "user__email"
+
+    def user_epik_unique_number(self, obj):
+        return obj.user.epik_unique_number
+    user_epik_unique_number.short_description = 'Epik Unique Number'
+    user_epik_unique_number.admin_order_field = 'user__epik_unique_number'
+
 
 
 admin.site.index_title = None

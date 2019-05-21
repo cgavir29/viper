@@ -1,31 +1,29 @@
 import clase as cl
 from horario import Horario
 
-
 class Prof_Base:
     def __init__(self, iden, score, max_horas, horario=None):
 
         if horario == None:
-            # print("here");
             self.horario = Horario()
         else:
             self.horario = horario
 
-        self.iden = iden
+        self.id = iden
         self.score = score
         self.max_horas = max_horas
 
     def __repr__(self):
-        return f"pr{self.iden}"
+        return f"pr{self.id}"
 
     def get_id(self):
-        return self.iden
+        return self.id
 
     def get_horario(self):
         return self.horario
 
     def copy_self(self):
-        prof = Prof_Base(self.iden, self.score, self.max_horas)
+        prof = Prof_Base(self.get_id(), self.score, self.max_horas)
 
         this_diario = self.get_horario().get_diario()
         for dia in this_diario.keys():
@@ -134,19 +132,23 @@ class Prof_Base:
                     if clase_2h_post.get_sede() != cl.get_sede():
                         return False
                     
-                
         return True
                 
-        
-    
+
     def is_avail(self, cl, esc):
         # AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA DONT FORGET THIS IFFFFFFFFFFFFFF
         prof_is_overused = self.is_overused()
+        if prof_is_overused:
+            print("prof is overused")
 
         prof_is_avail = self.has_sch(cl.get_horario())
+        if not prof_is_avail:
+            print("prof is unavail")
         
         # prof_in_time = self.sede_check_2(cl, esc)
         prof_in_time = self.sede_check_2(cl, esc)
+        if not prof_in_time:
+            print("prof cant make it")
         
         return (not prof_is_overused) and prof_is_avail and prof_in_time
 
@@ -186,8 +188,8 @@ class Prof_Base:
 class Profesor(Prof_Base):
     def __init__(self, iden, horario=None, score=0, max_horas=0):
         Prof_Base.__init__(self, iden, score, max_horas, horario)
-        # self.horario_p = hr.Horario()  # horario
-        # corresponde a los llamados "cursos aprobados"
+        
+        # Todos los cursos que puede dictar el profesor
         self.reqr = set()
 
         """Ocurre lo mismo que ocurre en curso, se ponen 
@@ -197,7 +199,10 @@ class Profesor(Prof_Base):
         pero con valores distintos"""
 
         # estatus 0 si novicio, 1 si docente, 2 si master
-        self.variables = {}
+        self.variables = {
+            #"simevi":5,
+            #"pdp":2,
+        }
 
         self.sedes = set()
 
