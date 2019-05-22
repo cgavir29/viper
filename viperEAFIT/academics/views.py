@@ -55,7 +55,7 @@ def load_schedules(request):
     context = {
         'schedules': schedules
     }
-    
+
     return render(request, 'academics/schedule_dropdown_options.html', context)
 
 
@@ -65,6 +65,7 @@ class ClassUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = 'academics/class_update.html'
     model = Class
     form_class = UpdateClassForm
+    success_url = reverse_lazy('academics:class_list')
 
     # def get_form_kwargs(self):
     #     '''This goes in the Update view'''

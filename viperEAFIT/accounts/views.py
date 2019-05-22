@@ -117,8 +117,6 @@ class TeacherListView(LoginRequiredMixin, generic.ListView):
     template_name = 'accounts/teacher_list.html'
 
     def get_queryset(self):
-        # current_coordinator = Coordinator.objects.get(user=self.request.user)
-        # program = Program.objects.get(coordinator=current_coordinator)
         program = Program.objects.get(coor=self.request.user)
         subprograms = SubProgram.objects.filter(program=program)
         teacher_queryset = Teacher.objects.none()
@@ -144,7 +142,18 @@ class ClassListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         current_teacher = Teacher.objects.get(user=self.request.user)
-        return Class.objects.filter(teacher=current_teacher)
+        class_queryset = Class.objects.filter(teacher=current_teacher)
+        if 'q' in self.request.GET:
+            query = self.request.GET.get('q')
+            class_queryset = class_queryset.filter(
+                Q(course__subprogram__name__icontains=query) |
+                Q(course__name__icontains=query) |
+                Q(intensity__icontains=query) |
+                Q(venue__name__icontains=query) |
+                Q(schedule__name__icontains=query)
+            )
+
+        return class_queryset
 
 
 class TeacherVenueUpdate(LoginRequiredMixin, generic.UpdateView):
