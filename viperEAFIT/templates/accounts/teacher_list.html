@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block nav-sub %}Teachers List{% endblock %}
 
+{% block content %}
 <div class="container">
-    <h1 class="subtitle">My Teachers</h1>
     <form action="">
             <input class="input is-rounded" type="search" placeholder="Search" name="q" value="{{ request.GET.q }}">
         </form>

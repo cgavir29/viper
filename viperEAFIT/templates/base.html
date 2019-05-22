@@ -46,7 +46,32 @@
 
     <!-- Nav Bar -->
     {% if user.is_authenticated %}
-    {% include 'partials/_navbar.html' %}
+    <section class="section">
+        <div class="container">
+            <!-- Main level container -->
+            <nav class="level">
+                <!-- Left Side -->
+                <div class="level-left">
+                    <div class="level-item">
+                        <h1 class="subtitle"><strong>{% block nav-sub %} {% endblock %}</strong></h1>
+                    </div>
+                </div>
+                <!-- Right Side -->
+                <div class="level-right">
+                    <p class="level-item">
+                        <strong>
+                            Welcome {{ user.first_name }} {{ user.last_name }}
+                        </strong>
+                    </p>
+                    <a class="button is-rounded eafit" href="{% url 'accounts:login' %}">
+                        <i class="fas fa-home"></i>&nbsp Home</a>
+                    &nbsp
+                    <a class="button is-rounded eafit" href="{% url 'accounts:logout' %}">
+                        <i class="fas fa-sign-out-alt"></i>&nbsp Logout</a>
+                </div>
+            </nav>
+        </div>
+    </section>
     {% endif %}
 
 
@@ -58,7 +83,35 @@
     <!-- Footer -->
     <br>
     <br>
-    {% include 'partials/_footer.html' %}
+    <footer class="footer eafit">
+        <div class="content has-text-centered">
+            <p>Universidad EAFIT</p>
+        </div>
+    </footer>
+    <footer class="footer eafit-info">
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    <div class="title is-5"><i class="fa fa-phone"></i><strong> 01 8000 515 900 </strong></div>
+                </div>
+                <address class="has-text-centered">
+                    Universidad EAFIT, Cra 49 N° 7 Sur-50, Medellín - Colombia ? Medellín: (57)(4)4489500 ? Conmutador:
+                    (57)(4)2619500<br>
+                    <a class="Footer-link" target="_blank" href="http://www.eafit.edu.co/campus-eafit">Campus
+                        Medellín</a> |
+                    <a target="_blank" class="Footer-link" href="http://www.eafit.edu.co/bogota">EAFIT Bogotá</a> | <a
+                        target="_blank" class="Footer-link" href="http://www.eafit.edu.co/pereira">EAFIT Pereira</a> |
+                    <a target="_blank" class="Footer-link" href="http://www.eafit.edu.co/llanogrande">EAFIT
+                        Llanogrande</a><br>
+                    Copyright 2018 ® | <a target="_blank" class="Footer-link"
+                        href="http://www.eafit.edu.co/datospersonales">Política de protección de datos personales</a> |
+                    <a class="Footer-link" href="mailto:ei@eafit.edu.co">Contáctenos</a>
+                    <br><br>
+                    <h3 class="title is-6">Vigilada Mineducación</h3>
+                </address>
+            </div>
+        </div>
+    </footer>
 
 
 

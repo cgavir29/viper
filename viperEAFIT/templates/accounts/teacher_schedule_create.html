@@ -2,11 +2,11 @@
 
 {% load bulma_tags %}
 
+{% block nav-sub %}Schedule{% endblock %}
+
+
 {% block content %}
-
-
 <div class="container">
-    <h1 class="subtitle">My Venues</h1>
     <div class="box">
             <form action="" method="POST">
                     {% csrf_token %}
