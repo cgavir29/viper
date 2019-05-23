@@ -1,0 +1,45 @@
+section.eafit {
+    background-color:  rgb(4, 57, 90);
+}
+
+h1.eafit {
+    color: white;
+}
+
+button.eafit {
+    background-color: rgb(4, 57, 90);
+    color: white;
+}
+
+button.eafit:hover {
+    background-color: rgb(26, 166, 215);
+    color: white;
+}
+
+/* button.light-eafit {
+    background-color: rgb(26, 166, 215);
+    color: white;
+} */
+
+a.button.eafit {
+    background-color: rgb(4, 57, 90);
+    color: white;
+}
+
+a.button.eafit:hover {
+    background-color: rgb(26, 166, 215);
+    color: white;
+}
+
+footer.eafit {
+    background-color: rgb(24, 114, 148);
+}
+
+footer p {
+    color: white;
+}
+
+footer.eafit-info {
+    background-attachment: rgb(238, 238, 238);
+}
+

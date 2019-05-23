@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load bulma_tags %}
+
+{% block nav-sub %}Venues{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="box">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form | bulma }}
+            <div class="has-text-centered">
+                <button type="submit" class="button eafit is-rounded">Update</button>
+                <a href="{% url 'accounts:teacher' %}" class="button is-rounded">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block nav-sub %}Classes List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form action="">
+        <input class="input is-rounded" type="search" placeholder="Search" name="q" value="{{ request.GET.q }}">
+    </form>
+    <br>
+    <table class="table is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>SubProgram</th>
+                <th>Course</th>
+                <th>Intensity</th>
+                <th>Venue</th>
+                <th>Schedule</th>
+                <th>Teacher</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for class in class_list %}
+            <tr>
+                <th>{{ forloop.counter }}</th>
+                <td>{{ class.course.subprogram.name }}</td>
+                <td>{{ class.course }}</td>
+                <td>{{ class.intensity }}</td>
+                <td>{{ class.venue }}</td>
+                <td>{{ class.schedule }}</td>
+                <td>{% if class.teacher is None %}
+                    ---------
+                    {% else %}
+                    {{ class.teacher }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="button is-rounded eafit" href="{% url 'academics:class_update' class.id %}">Modify</a>
+                </td>
+                <td>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="button eafit is-rounded is-danger is-outlined"
+                            onclick="return confirm('Are you sure you want to delete this item?');">
+                            <input type="hidden" name="id" value="{{ class.id }}">
+                            <span>Delete</span>
+                            <span class="icon is-small">
+                                <i class="fas fa-times"></i>
+                            </span>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+    </table>
+</div>
+{% endblock %}
