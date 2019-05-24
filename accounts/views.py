@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,6 +13,7 @@ from .models import User, Teacher
 from .forms import UpdateTeacherVenueForm, TeacherScheduleForm, TeacherScheduleCreateForm
 from venues.models import Venue
 from schedules.models import Schedule
+from algorithm.escuela import Escuela
 
 class LoginView(generic.FormView):
     """
@@ -73,6 +75,10 @@ class CoordinatorDashboardView(LoginRequiredMixin, generic.View):
         }
 
         return render(request, 'accounts/coordinator.html', context)
+
+    def post(self, request):
+        print('jojo')
+        return redirect(reverse_lazy('accounts:coordinator'))
 
 
 class TeacherDashboardView(LoginRequiredMixin, generic.View):
