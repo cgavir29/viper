@@ -13,12 +13,15 @@ from .models import User, Teacher
 from .forms import UpdateTeacherVenueForm, TeacherScheduleForm, TeacherScheduleCreateForm
 from venues.models import Venue
 from schedules.models import Schedule
-from algorithm.escuela import Escuela
+from scripts.algorithm import build_school
 
+
+# -----------------------------------------------------------------
 class LoginView(generic.FormView):
     """
         Provides the ability to login users to the platform
     """
+
     form_class = AuthenticationForm
     template_name = 'accounts/login.html'
     
@@ -51,17 +54,22 @@ class LoginView(generic.FormView):
 
         return str(target_url)
 
-
+# -----------------------------------------------------------------
 class LogoutView(generic.View):
     """
         Logs users out
     """
+
     def get(self, request):
         logout(request)
         return redirect('accounts:login')
 
-
+# -----------------------------------------------------------------
 class CoordinatorDashboardView(LoginRequiredMixin, generic.View):
+    """
+        Renders the coordinator's related html dashboard and handles gets and posts
+    """
+
     login_url = '/'
     redirect_field_name = 'login'
 
@@ -77,11 +85,16 @@ class CoordinatorDashboardView(LoginRequiredMixin, generic.View):
         return render(request, 'accounts/coordinator.html', context)
 
     def post(self, request):
-        print('jojo')
+        coor_program = Program.objects.get(coor=request.user.id)
+        build_school.run(coor_program.name)
         return redirect(reverse_lazy('accounts:coordinator'))
 
-
+# -----------------------------------------------------------------
 class TeacherDashboardView(LoginRequiredMixin, generic.View):
+    """
+        Renders the teacher's related html dashboard and handles gets
+    """
+
     login_url = '/'
     redirect_field_name = 'login'
  
@@ -95,7 +108,7 @@ class TeacherDashboardView(LoginRequiredMixin, generic.View):
 
         return render(request, 'accounts/teacher.html', context)
 
-
+# -----------------------------------------------------------------
 class TeacherDetailView(LoginRequiredMixin, generic.DetailView):
     login_url = '/'
     redirect_field_name = 'login'
@@ -116,8 +129,12 @@ class TeacherDetailView(LoginRequiredMixin, generic.DetailView):
         context = super(TeacherDetailView, self).get_context_data(**kwargs)
         return render(request, self.success_url, context)
 
-
+# -----------------------------------------------------------------
 class TeacherListView(LoginRequiredMixin, generic.ListView):
+    """
+        Lists teachers that are in the same program as the coordinator
+    """
+
     login_url = '/'
     redirect_field_name = 'login'
     template_name = 'accounts/teacher_list.html'
@@ -140,7 +157,7 @@ class TeacherListView(LoginRequiredMixin, generic.ListView):
 
         return teacher_queryset
 
-
+# -----------------------------------------------------------------
 class ClassListView(LoginRequiredMixin, generic.ListView):
     login_url = '/'
     redirect_field_name = 'login'
@@ -161,7 +178,7 @@ class ClassListView(LoginRequiredMixin, generic.ListView):
 
         return class_queryset
 
-
+# -----------------------------------------------------------------
 class TeacherVenueUpdate(LoginRequiredMixin, generic.UpdateView):
     login_url = '/'
     redirect_field_name = 'login'
@@ -170,7 +187,7 @@ class TeacherVenueUpdate(LoginRequiredMixin, generic.UpdateView):
     form_class = UpdateTeacherVenueForm
     success_url = '/teacher/'
 
-
+# -----------------------------------------------------------------
 class TeacherScheduleView(LoginRequiredMixin, generic.UpdateView):
     login_url = '/'
     redirect_field_name = 'login'
@@ -179,7 +196,7 @@ class TeacherScheduleView(LoginRequiredMixin, generic.UpdateView):
     form_class = TeacherScheduleForm
     success_url = '/teacher/'
 
-
+# -----------------------------------------------------------------
 class TeacherScheduleCreateView(LoginRequiredMixin, generic.CreateView):
     login_url = '/'
     redirect_field_name = 'login'
@@ -188,7 +205,6 @@ class TeacherScheduleCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = TeacherScheduleCreateForm
     success_url = '/teacher/'
     
-
     def post(self, request, *args, **kwargs):
         form = TeacherScheduleCreateForm(request.POST)
         if form.is_valid():

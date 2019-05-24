@@ -35,8 +35,8 @@ class TeacherAdmin(admin.ModelAdmin):
     search_fields = ('user__first_name', 'user__last_name', 'user__email', 'user__epik_unique_number', 'available_hours')
     fieldsets = (
         (('General Information'), {
-         'fields': ('user', 'status', 'venues', 'availability')}),
-        (('Evaluations and Control'), {'fields': ('sufficiency', 'simevi', 'pdp', 
+         'fields': ('user', 'status',)}),
+        (('Evaluations and Follow-Up'), {'fields': ('sufficiency', 'simevi', 'pdp', 
         'coor_eval', 'student_eval', 'self_eval', 'observations',)}),
     )
     def user_first_name(self, obj):
