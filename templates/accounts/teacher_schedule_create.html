@@ -8,36 +8,42 @@
 {% block content %}
 <div class="container">
     <div class="box">
-            <form action="" method="POST">
-                    {% csrf_token %}
-                    {{ form.name }}
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.name }}
 
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Monday</th>
-                                <th>Tuesday</th>
-                                <th>Wednesday</th>
-                                <th>Thursday</th>
-                                <th>Friday</th>
-                                <th>Saturday</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                                
-                            <tr>
-                                <th></th>
-                                <td>{{ form.monday }}</td>
-                                <td>{{ form.tuesday }}</td>
-                                <td>{{ form.wednesday }}</td>
-                                <td>{{ form.thursday }}</td>
-                                <td>{{ form.friday }}</td>
-                                <td>{{ form.saturday }}</td>
-                            </tr>
-                            
-                        </tbody>
-                    </table>
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                        <th>Saturday</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th>
+                            {% for t in form.TIME_CHOICES %}
+                            {{ t }}
+                            <br>
+                            {% endfor %}
+
+                        </th>
+                        <td>{{ form.monday }}</td>
+                        <td>{{ form.tuesday }}</td>
+                        <td>{{ form.wednesday }}</td>
+                        <td>{{ form.thursday }}</td>
+                        <td>{{ form.friday }}</td>
+                        <td>{{ form.saturday }}</td>
+                    </tr>
+
+                </tbody>
+            </table>
             <div class="has-text-centered">
                 <button type="submit" class="button eafit is-rounded">Update</button>
                 <a href="{% url 'accounts:teacher' %}" class="button is-rounded">Cancel</a>
@@ -46,10 +52,10 @@
     </div>
 </div>
 <br><br>
-    
-    <script>
-        window.onload = function () {
-            document.getElementById("name").value = "{{ request.user.teacher.id }}";
-        };
-    </script>
+
+<script>
+    window.onload = function () {
+        document.getElementById("name").value = "{{ request.user.teacher.id }}";
+    };
+</script>
 {% endblock %}
