@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block nav-sub %}Teachers List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form action="">
+            <input class="input is-rounded" type="search" placeholder="Search" name="q" value="{{ request.GET.q }}">
+        </form>
+        <br>
+    <table class="table is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Available Hours</th>
+                <th>Venues</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for teacher in teacher_list %}
+            <tr>
+                <th>{{ forloop.counter }}</th>
+                <td>{{ teacher.user.first_name }}</td>
+                <td>{{ teacher.user.last_name }}</td>
+                <td>{{ teacher.user.email }}</td>
+                <td>{{ teacher.available_hours }}</td>
+                <td>
+                    {% for venue in teacher.venues.all %}
+                        {{ venue }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ teacher.status }}</td>
+            </tr>
+            {% endfor %}
+    </table>
+</div>
+{% endblock %}
