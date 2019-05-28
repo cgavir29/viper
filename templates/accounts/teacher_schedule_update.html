@@ -9,7 +9,7 @@
     <div class="box">
         <form action="" method="POST">
             {% csrf_token %}
-            <table class="table">
+            <table class="table is-fullwidth">
                 <thead>
                     <tr>
                         <th>Time</th>
@@ -22,9 +22,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                                        
+
                     <tr>
-                        <th></th>
+                        <th>
+                            {% for t in form.TIME_CHOICES %}
+                            {{ t }}
+                            <br>
+                            {% endfor %}
+
+                        </th>
                         <td>{{ form.monday }}</td>
                         <td>{{ form.tuesday }}</td>
                         <td>{{ form.wednesday }}</td>
@@ -32,7 +38,7 @@
                         <td>{{ form.friday }}</td>
                         <td>{{ form.saturday }}</td>
                     </tr>
-                    
+
                 </tbody>
             </table>
             <div class="has-text-centered">
