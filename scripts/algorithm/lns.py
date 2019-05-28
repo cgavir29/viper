@@ -64,9 +64,13 @@ def rnd_gene_repair(esc, clase, sol):
 
 
 # gives us a random solution, real good
-def gen_rndsol(esc):
+def gen_rndsol(esc, clases_index=None):
+    if not clases_index:
+        clases_index = esc.get_clases().keys() 
+
     solb = sol.Solucion()
-    for cla in esc.get_clases().values():
+    for cla_id in clases_index:
+        cla = esc.get_clase(cla_id)
         # cla.sort_cands(esc)   #already sorted in simdata     
         prof = rnd_gene_repair(esc, cla, solb)
         # print("conf", prof)

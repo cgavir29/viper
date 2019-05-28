@@ -60,15 +60,17 @@ def run_greedy(esc, clases_index):
 
     
 def run_pure_lns(esc, gens=1000):
+    clases_index = get_clases_index(esc)
+    print(clases_index)
     print("RND SOL INI---------------------------------------------------")
-    rnd_sol = gen_rndsol(esc)
+    rnd_sol = gen_rndsol(esc, clases_index)
     print("HELLO")
     rnd_sol.print_info()
     print("--------------------------------------------------------------\n")
 
     for i in range(gens):
         print(i, end = "\r")
-        do_lns(rnd_sol, esc, 50, 110)
+        do_lns(rnd_sol, esc, 50, 110, clases_index)
 
     rnd_sol.print_info()
     return rnd_sol
@@ -80,27 +82,4 @@ def run_genetic_alg(esc, clases_index, gens = 1200, pop_size = 300):
     return champ_sol
     print("----------------------------------------------------------\n")
     
-
-    
-def algorith_tester():
-    print("TESTING ALGORITHMS WITH RANDOM PROFS---------------------\n")
-    rnd_esc = gen_rndesc(
-        300,
-        0.75,
-        1,
-        0.5,
-        ["simevi", "microteach", "prom_eval", "pdp_cum", "estatus"],
-        ["u", "s", "l", "b", "r", "p"],
-    )
-
-    clases_index = get_clases_index(rnd_esc)
-    # rnd_esc.print_info()
-    # run_greedy(rnd_esc, clases_index)
-    # run_pure_lns(rnd_esc)
-    # run_genetic_alg(rnd_esc, clases_index)
-    for i in range(1000):
-        greedy_sol(rnd_esc, clases_index)        
-
-
-# test_is_avail()    
 
