@@ -2,7 +2,6 @@ import random as rnd
 import copy
 import time as tm
 from . import solucion as sol
-from . import simdata as sm
 from . import profesor as sm
 from . import horario as hr
 from . import lns

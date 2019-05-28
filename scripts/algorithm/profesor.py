@@ -143,7 +143,8 @@ class Prof_Base:
 
         prof_is_avail = self.has_sch(cl.get_horario())
         if not prof_is_avail:
-            print("prof is unavail")
+            pass
+            #print("prof is unavail")
         
         # prof_in_time = self.sede_check_2(cl, esc)
         prof_in_time = self.sede_check_2(cl, esc)

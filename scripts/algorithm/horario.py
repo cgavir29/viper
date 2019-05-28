@@ -1,5 +1,3 @@
-
-
 class Horario:
     def __init__(self):
         # Esto representa las diferentes franjas horarias de cada dia
@@ -45,15 +43,15 @@ class Horario:
         
         val = self.diario.get(dia).get(hora)
         if val == None:
-            return "-1"
+            return "notavail"
         
         return val
 
     def set_single(self, dia, hora, val, state=True):
         if val == "0" and not state:
-            self.total_h -=1
-        elif val!= "0":
-            self.total_h +=1
+            self.total_h -= 1
+        elif val != "0":
+            self.total_h += 1
 
         self.diario[dia][hora] = val
     # cambia el estado de  cierta hora en cierto dia en el horario
@@ -65,7 +63,7 @@ class Horario:
             for h in horas:
                 self.diario[dia][h] = val
 
-                if val != "0":
+                if val != "0": 
                     self.total_h += 1
         else:
             for h in horas:
@@ -87,7 +85,6 @@ class Horario:
             if len(self.get_dia(dia)) == 0:
                 self.diario.pop(dia)
         
-
     def equal_to(self, other):
         for dia in self.diario.keys():
             for hora in self.get_dia(dia).keys():
@@ -98,5 +95,26 @@ class Horario:
                     return False
         
         return True
-                
 
+
+    def count_instances_of(self, item):
+        appearances = 0
+        for dia in self.diario.keys():
+            for act in self.get_dia(dia).values():
+                if act == item:
+                    appearances += 1
+                
+                
+        return appearances
+
+
+    def is_congruent_with(self, other):
+        for dia in self.diario.keys():
+            if other.get_dia(dia) != None:
+                hrs_self = self.get_dia(dia).keys()
+                hrs_other = self.get_dia(dia).keys()
+                if hrs_other != hrs_self:
+                    return False
+            else:
+                return False
+        return True

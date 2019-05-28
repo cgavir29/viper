@@ -186,6 +186,6 @@ class Solucion:
             average += num_h
 
         print("nominal score", self.nom_score, "conf", self.conf_nom_score())
-
-        print("average num of h", average / self.active_profs)
+        if (self.active_profs):
+            print("average num of h", average / self.active_profs)
         print(unis, "under used teachers\n")

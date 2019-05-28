@@ -8,6 +8,7 @@ from .clase import Clase
 from .horario import Horario
 from .profesor import Profesor
 from .lns import gen_rndsol
+from .tester import run_pure_lns
 
 
 
@@ -70,9 +71,9 @@ def cast_teacher(teach):
     return prof
 
 # -----------------------------------------------------------------
-def save_to_data_base(solc, django_clases, django_teachers):
+def save_to_data_base(solc, django_classes, django_teachers):
     for (class_id, assig_tup) in solc.get_clprofs().items():
-        current_class = django_clases.get(id=class_id)
+        current_class = django_classes.get(id=class_id)
         assigned_teacher = assig_tup[0]
         if assigned_teacher != 'nocand':
             current_class.teacher = django_teachers.get(id=assigned_teacher)
@@ -105,13 +106,20 @@ def run(program_name):
     print('Courses', esc.get_cursos())
     print('Teachers', esc.get_profs())
 
-    import time
-    for i in range(0, 5):
-        time.sleep(1)
-        print('Hello, world!')
+    esc.assign_cands()
+
+    for cl in esc.get_clases().values():
+        print(cl.iden)
+        
+        print('Sede', cl.sede)
+        print(cl.get_cands())
+        print('Horario', cl.get_horario())
+    sol = run_pure_lns(esc)
+    print(sol.clase_prof)
+    save_to_data_base(sol, django_classes, django_teachers)
+
+    #sol = gen_rndsol(esc)
+    #save_to_data_base(sol, django_classes, django_teachers)
 
 
-# esc.assign_cands()
 
-# a = gen_rndsol(esc)
-# save_to_data_base(a, django_clases, django_teachers)

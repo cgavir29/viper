@@ -55,15 +55,15 @@ class Clase:
     def can_teach(self, prof):
         
         if self.sede not in prof.get_sedes():
-            # print(prof.id, "doesnt have the sede for", self.iden)
+            print(prof.id, "doesnt have the sede for", self.iden)
             return False
 
         if not prof.has_sch(self.horario):
-            # print(prof.id, "doesnt have the horario for", self.iden)
+            print(prof.id, "doesnt have the horario for", self.iden)
             return False
 
         if self.curso not in prof.get_reqr():
-            # print(prof.id, "doesnt have reqr for", self.iden)
+            print(prof.id, "doesnt have reqr for", self.iden)
             return False
             
         return True
