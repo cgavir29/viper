@@ -144,7 +144,7 @@ def destroy_by_classnum(sol, amount_des, esc):
     for clase_id in sol.get_clprofs().keys():
         assig = sol.get_clprof(clase_id)[0]
         clase = esc.get_clase(clase_id)
-        if assig in poor_sods:
+        if assig in poor_sods and len(clase.get_cands())>1:
             sol.add_hole(clase)
         
 
@@ -168,8 +168,9 @@ def destroy_rand_cl_ex(sol, rnd_des, esc):
         target_clase_id = rnd.choice(sol_asigs)
         target_clase = esc.get_clase(target_clase_id)
         if target_clase_id not in used and not sol.has_hole(target_clase):
+            if len(target_clase.get_cands()>1):
+                sol.add_hole(target_clase)
             used.add(target_clase_id)
-            sol.add_hole(target_clase)
 
         
 
