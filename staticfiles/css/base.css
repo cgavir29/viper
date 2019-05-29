@@ -16,11 +16,6 @@ button.eafit:hover {
     color: white;
 }
 
-/* button.light-eafit {
-    background-color: rgb(26, 166, 215);
-    color: white;
-} */
-
 a.button.eafit {
     background-color: rgb(4, 57, 90);
     color: white;
@@ -43,3 +38,53 @@ footer.eafit-info {
     background-attachment: rgb(238, 238, 238);
 }
 
+footer h2.subtitle {
+    font-family: Roboto,sans-serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7DDFFF;
+    margin: 0;
+}
+
+footer li a:link {
+    color: #F8F8F8;
+    font-family: 'Roboto Condensed',sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+}
+
+footer li a:visited {
+    color:white;
+}
+
+footer li a:hover {
+    color: rgb(26, 166, 215);
+    text-decoration: underline;
+}
+
+hr {
+    background-color: rgb(26, 166, 215);
+    height: 1px;
+    margin: 9px;
+}
+
+address {
+    text-align: center;
+    display: inline-block;
+    color: gray;
+    font-family: 'Roboto Condensed',sans-serif;
+    margin-bottom: 0;
+}
+
+address a:link {
+    color: rgb(26, 166, 215);
+}
+
+address a:hover {
+    text-decoration: underline;
+}
+
+address a:visited {
+    color: rgb(26, 166, 215);
+}
